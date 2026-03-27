@@ -40,8 +40,8 @@ body {
 
 .hero-layout {
   display: grid;
-  grid-template-columns: 1.1fr 1fr;
-  gap: 22px;
+  grid-template-columns: 1fr;
+  gap: 0;
   align-items: center;
 }
 
@@ -51,6 +51,10 @@ body {
   border-radius: 14px;
   border: 1px solid #bfd1ff;
   background: linear-gradient(135deg, #edf3ff, #e8f8ff);
+}
+
+.hero-text {
+  text-align: center;
 }
 
 .conference-tag {
@@ -88,6 +92,12 @@ h2 {
   flex-wrap: wrap;
   gap: 10px;
   margin-top: 18px;
+  justify-content: center;
+}
+
+.hero-media {
+  width: 100%;
+  margin-top: 28px;
 }
 
 .btn {
