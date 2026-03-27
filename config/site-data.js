@@ -1,15 +1,15 @@
 window.SITE_DATA = {
   paper: {
-    title: "NeuroEmbody: Placeholder Title for ECCV 2026 Submission",
+    title: "NeuroEmbody: Anonymous Submission",
     subtitle: "A project page template with configurable media and demos.",
-    conference: "ECCV 2026",
+    conference: "Anonymous Submission",
     abstract:
       "This is a placeholder abstract. Replace this text with your final paper abstract after your submission is ready.",
     teaser: "assets/images/teaser.jpg",
-    bibtex: `@inproceedings{neuroembody2026,
-  title={NeuroEmbody: Placeholder Title},
-  author={Author, First and Collaborator, Second},
-  booktitle={European Conference on Computer Vision (ECCV)},
+    bibtex: `@article{neuroembody2026,
+  title={NeuroEmbody: Anonymous Submission},
+  author={Anonymous},
+  journal={Under review},
   year={2026}
 }`
   },
