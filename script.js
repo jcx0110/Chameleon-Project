@@ -11,8 +11,11 @@
     const a = document.createElement("a");
     a.className = className;
     a.href = url || "#";
-    a.target = "_blank";
-    a.rel = "noopener noreferrer";
+    const isInPageAnchor = typeof url === "string" && url.startsWith("#");
+    if (!isInPageAnchor) {
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
+    }
 
     if (iconClass) {
       const icon = document.createElement("i");
@@ -60,7 +63,7 @@
       ["Code", data.links?.code, "bi-github"],
       ["Paper", data.links?.paper, "bi-file-earmark-pdf-fill"],
       ["arXiv", data.links?.arxiv, "bi-journal-text"],
-      ["BibTeX", data.links?.bibtex, "bi-quote"]
+      ["BibTeX", data.links?.bibtex || "#citation", "bi-quote"]
     ];
     items.forEach(([label, url, iconClass]) =>
       links.appendChild(makeButton(label, url, "btn", iconClass))

@@ -18,7 +18,7 @@ window.SITE_DATA = {
     { name: "Author Two", affiliation: "Institute B", homepage: "#" },
     { name: "Author Three", affiliation: "Institute C", homepage: "#" }
   ],
-  links: { code: "#", arxiv: "#", paper: "#", bibtex: "#" },
+  links: { code: "#", arxiv: "#", paper: "#", bibtex: "#citation" },
   sections: {
     motivation:
       "Motivation placeholder: briefly explain why your approach is needed and what challenge it solves.",
