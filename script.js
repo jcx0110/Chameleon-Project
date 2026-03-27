@@ -7,13 +7,24 @@
 
   const byId = (id) => document.getElementById(id);
 
-  function makeButton(label, url, className = "btn") {
+  function makeButton(label, url, className = "btn", iconClass = "") {
     const a = document.createElement("a");
     a.className = className;
-    a.textContent = label;
     a.href = url || "#";
     a.target = "_blank";
     a.rel = "noopener noreferrer";
+
+    if (iconClass) {
+      const icon = document.createElement("i");
+      icon.className = `bi ${iconClass} button-icon`;
+      icon.setAttribute("aria-hidden", "true");
+      a.appendChild(icon);
+    }
+
+    const text = document.createElement("span");
+    text.textContent = label;
+    a.appendChild(text);
+
     return a;
   }
 
@@ -46,12 +57,14 @@
 
     const links = byId("quick-links");
     const items = [
-      ["Code", data.links?.code],
-      ["arXiv", data.links?.arxiv],
-      ["Paper", data.links?.paper],
-      ["BibTeX", data.links?.bibtex]
+      ["Code", data.links?.code, "bi-github"],
+      ["Paper", data.links?.paper, "bi-file-earmark-pdf-fill"],
+      ["arXiv", data.links?.arxiv, "bi-journal-text"],
+      ["BibTeX", data.links?.bibtex, "bi-quote"]
     ];
-    items.forEach(([label, url]) => links.appendChild(makeButton(label, url)));
+    items.forEach(([label, url, iconClass]) =>
+      links.appendChild(makeButton(label, url, "btn", iconClass))
+    );
 
     const teaserVideo = byId("teaser-video");
     teaserVideo.src = data.paper.teaser || "";

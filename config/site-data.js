@@ -5,7 +5,7 @@ window.SITE_DATA = {
     conference: "Anonymous Submission",
     abstract:
       "This is a placeholder abstract. Replace this text with your final paper abstract after your submission is ready.",
-    teaser: "assets/videos/teaser.mp4",
+    teaser: "assets/videos/video1 - teaser.mp4",
     bibtex: `@article{neuroembody2026,
   title={NeuroEmbody: Anonymous Submission},
   author={Anonymous},
