@@ -38,6 +38,21 @@ body {
     linear-gradient(120deg, rgba(68, 88, 255, 0.12), rgba(0, 166, 255, 0.12) 45%, rgba(122, 77, 255, 0.12));
 }
 
+.hero-layout {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 22px;
+  align-items: center;
+}
+
+.hero-media video {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 14px;
+  border: 1px solid #bfd1ff;
+  background: linear-gradient(135deg, #edf3ff, #e8f8ff);
+}
+
 .conference-tag {
   display: inline-block;
   margin: 0 0 12px;
@@ -97,6 +112,15 @@ h2 {
   border-bottom: 1px solid var(--border);
 }
 
+.method-video-wrap video {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 12px;
+  border: 1px solid #bfd1ff;
+  background: linear-gradient(135deg, #eef4ff, #e8fbff);
+  margin: 8px 0 14px;
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -109,6 +133,77 @@ h2 {
   border-radius: 12px;
   padding: 14px;
   box-shadow: 0 8px 24px rgba(31, 60, 136, 0.08);
+}
+
+.btn.small {
+  padding: 7px 11px;
+  font-size: 0.9rem;
+}
+
+.motivation-prompt {
+  margin: 10px 0 16px;
+  color: #2f457a;
+  font-weight: 600;
+}
+
+.lanes {
+  display: grid;
+  gap: 14px;
+}
+
+.lane {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+  background: linear-gradient(180deg, #ffffff, #f7faff);
+}
+
+.lane h3 {
+  margin: 0 0 10px;
+  font-size: 1rem;
+  color: #2b4188;
+}
+
+.comic-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.comic-row .media-box,
+.comic-row .media-placeholder {
+  aspect-ratio: 4 / 3;
+}
+
+.options-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.quiz-option {
+  border: 1px solid #bfd1ff;
+  background: linear-gradient(135deg, #edf2ff, #e8f9ff);
+  color: #23346a;
+  border-radius: 10px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.quiz-result {
+  min-height: 24px;
+  margin: 12px 0 0;
+  font-weight: 700;
+}
+
+.quiz-result[data-state="success"] {
+  color: #0a8452;
+}
+
+.quiz-result[data-state="error"] {
+  color: #c02d48;
 }
 
 .media-box {
@@ -182,5 +277,13 @@ a {
 @media (max-width: 640px) {
   .hero {
     padding-top: 48px;
+  }
+
+  .hero-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .comic-row {
+    grid-template-columns: 1fr;
   }
 }

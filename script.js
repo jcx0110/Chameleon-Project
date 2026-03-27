@@ -7,9 +7,9 @@
 
   const byId = (id) => document.getElementById(id);
 
-  function makeButton(label, url) {
+  function makeButton(label, url, className = "btn") {
     const a = document.createElement("a");
-    a.className = "btn";
+    a.className = className;
     a.textContent = label;
     a.href = url || "#";
     a.target = "_blank";
@@ -46,65 +46,25 @@
 
     const links = byId("quick-links");
     const items = [
-      ["Paper", data.links?.paper],
       ["Code", data.links?.code],
-      ["Dataset", data.links?.dataset],
-      ["Video", data.links?.video]
+      ["arXiv", data.links?.arxiv],
+      ["Paper", data.links?.paper],
+      ["BibTeX", data.links?.bibtex]
     ];
     items.forEach(([label, url]) => links.appendChild(makeButton(label, url)));
+
+    const teaserVideo = byId("teaser-video");
+    teaserVideo.src = data.paper.teaser || "";
+    teaserVideo.poster = data.paper.teaserPoster || "";
   }
 
   function renderTextBlocks() {
-    byId("abstract-text").textContent = data.paper.abstract || "";
+    byId("motivation-text").textContent = data.sections?.motivation || "";
     byId("method-text").textContent = data.sections?.method || "";
-    byId("results-text").textContent = data.sections?.results || "";
+    byId("dataset-text").textContent = data.sections?.dataset || "";
+    byId("acknowledgement-text").textContent =
+      data.sections?.acknowledgement || "";
     byId("bibtex-box").textContent = data.paper.bibtex || "";
-
-    const email = data.contact?.email || "your-email@example.com";
-    byId("contact-note").textContent = data.contact?.note || "";
-    byId("contact-email").textContent = email;
-    byId("contact-email").href = `mailto:${email}`;
-  }
-
-  function renderGallery() {
-    const root = byId("gallery-grid");
-    const images = data.images || [];
-
-    if (!images.length) {
-      const empty = document.createElement("p");
-      empty.className = "status-tag";
-      empty.textContent = "No figures yet. Add items in config/site-data.js";
-      root.appendChild(empty);
-      return;
-    }
-
-    images.forEach((item) => {
-      const card = document.createElement("article");
-      card.className = "card";
-      card.appendChild(
-        makeMedia(item.thumbnail, "Figure placeholder", item.title || "figure")
-      );
-
-      const title = document.createElement("h3");
-      title.textContent = item.title || item.id || "Untitled Figure";
-
-      const desc = document.createElement("p");
-      desc.textContent = item.description || "";
-
-      card.appendChild(title);
-      card.appendChild(desc);
-
-      if (item.full) {
-        const link = document.createElement("a");
-        link.href = item.full;
-        link.target = "_blank";
-        link.rel = "noopener noreferrer";
-        link.textContent = "Open full image";
-        card.appendChild(link);
-      }
-
-      root.appendChild(card);
-    });
   }
 
   function renderDemos() {
@@ -154,6 +114,92 @@
     });
   }
 
+  function renderMethodMedia() {
+    const methodVideo = byId("method-video");
+    methodVideo.src = data.methodMedia?.video || "";
+    methodVideo.poster = data.methodMedia?.poster || "";
+  }
+
+  function renderDatasetTasks() {
+    const root = byId("dataset-task-grid");
+    const tasks = data.datasetTasks || [];
+    if (!tasks.length) {
+      const empty = document.createElement("p");
+      empty.className = "status-tag";
+      empty.textContent = "No dataset tasks yet. Add items in config/site-data.js";
+      root.appendChild(empty);
+      return;
+    }
+
+    tasks.forEach((item) => {
+      const card = document.createElement("article");
+      card.className = "card";
+      card.appendChild(
+        makeMedia(item.cover, "Task cover placeholder", item.title || "task")
+      );
+
+      const title = document.createElement("h3");
+      title.textContent = item.title || "Untitled Task";
+      const desc = document.createElement("p");
+      desc.textContent = item.description || "";
+      const link = makeButton("Open task", item.url, "btn small");
+
+      card.appendChild(title);
+      card.appendChild(desc);
+      card.appendChild(link);
+      root.appendChild(card);
+    });
+  }
+
+  function renderMotivationGame() {
+    const lanesRoot = byId("motivation-lanes");
+    const optionsRoot = byId("motivation-options");
+    const resultNode = byId("motivation-result");
+    const game = data.motivationGame || {};
+    const lanes = game.lanes || [];
+
+    byId("motivation-prompt").textContent = game.prompt || "";
+
+    lanes.forEach((lane) => {
+      const laneNode = document.createElement("article");
+      laneNode.className = "lane";
+
+      const laneTitle = document.createElement("h3");
+      laneTitle.textContent = lane.title || "Lane";
+      laneNode.appendChild(laneTitle);
+
+      const comicRow = document.createElement("div");
+      comicRow.className = "comic-row";
+      (lane.comic || []).forEach((frame, index) => {
+        comicRow.appendChild(
+          makeMedia(frame, `Frame ${index + 1} placeholder`, `${lane.title} frame`)
+        );
+      });
+      laneNode.appendChild(comicRow);
+      lanesRoot.appendChild(laneNode);
+    });
+
+    (game.options || []).forEach((option) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "quiz-option";
+      button.textContent = option;
+      button.addEventListener("click", () => {
+        if (option === "I don't know") {
+          resultNode.textContent = "Congratulations!";
+          resultNode.dataset.state = "success";
+        } else if (option === game.answer) {
+          resultNode.textContent = "Congratulations, you are lucky!";
+          resultNode.dataset.state = "success";
+        } else {
+          resultNode.textContent = "Sorry, try again.";
+          resultNode.dataset.state = "error";
+        }
+      });
+      optionsRoot.appendChild(button);
+    });
+  }
+
   function wireCopyBibtex() {
     const button = byId("copy-bibtex");
     button.addEventListener("click", async () => {
@@ -173,7 +219,9 @@
 
   renderMeta();
   renderTextBlocks();
-  renderGallery();
+  renderMethodMedia();
+  renderDatasetTasks();
+  renderMotivationGame();
   renderDemos();
   wireCopyBibtex();
 })();
