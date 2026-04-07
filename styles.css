@@ -180,22 +180,110 @@ h2 {
   color: var(--text);
 }
 
-.comic-row {
+.lane-body {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px;
+  grid-template-columns: minmax(0, 1fr) minmax(200px, 280px);
+  gap: 20px;
+  align-items: center;
 }
 
-.comic-row .media-box,
-.comic-row .media-placeholder {
-  aspect-ratio: 4 / 3;
-}
-
-.options-row {
+.carousel {
   display: flex;
-  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.carousel-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.carousel-viewport {
+  width: 100%;
+  min-height: 200px;
+  aspect-ratio: 4 / 3;
+  border-radius: 8px;
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.carousel-image {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  vertical-align: middle;
+}
+
+.carousel-placeholder.media-placeholder {
+  aspect-ratio: unset;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  border: none;
+  border-radius: 8px;
+}
+
+.carousel-counter {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.carousel-nav {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  border: 1px solid var(--border-strong);
+  background: var(--widget);
+  color: var(--text);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.carousel-nav:hover:not(:disabled) {
+  background: var(--widget-hover);
+}
+
+.carousel-nav:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.lane-quiz {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   gap: 10px;
-  margin-top: 16px;
+}
+
+.lane-result {
+  min-height: 22px;
+  margin: 4px 0 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.lane-result[data-state="success"] {
+  color: #2d6a4f;
+}
+
+.lane-result[data-state="error"] {
+  color: #9b2c3c;
 }
 
 .quiz-option {
@@ -303,7 +391,12 @@ a:hover {
     grid-template-columns: 1fr;
   }
 
-  .comic-row {
+  .lane-body {
     grid-template-columns: 1fr;
+  }
+
+  .lane-quiz {
+    flex-direction: column;
+    align-items: stretch;
   }
 }

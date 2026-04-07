@@ -169,14 +169,20 @@
 
   function renderMotivationGame() {
     const lanesRoot = byId("motivation-lanes");
-    const optionsRoot = byId("motivation-options");
-    const resultNode = byId("motivation-result");
     const game = data.motivationGame || {};
     const lanes = game.lanes || [];
+    const optionLabels = game.options || [];
+    const defaultAnswer = game.answer;
 
     byId("motivation-prompt").textContent = game.prompt || "";
 
     lanes.forEach((lane) => {
+      const frames = lane.comic || [];
+      const laneAnswer =
+        lane.answer !== undefined && lane.answer !== null
+          ? lane.answer
+          : defaultAnswer;
+
       const laneNode = document.createElement("article");
       laneNode.className = "lane";
 
@@ -184,35 +190,119 @@
       laneTitle.textContent = lane.title || "Lane";
       laneNode.appendChild(laneTitle);
 
-      const comicRow = document.createElement("div");
-      comicRow.className = "comic-row";
-      (lane.comic || []).forEach((frame, index) => {
-        comicRow.appendChild(
-          makeMedia(frame, `Frame ${index + 1} placeholder`, `${lane.title} frame`)
-        );
-      });
-      laneNode.appendChild(comicRow);
-      lanesRoot.appendChild(laneNode);
-    });
+      const laneBody = document.createElement("div");
+      laneBody.className = "lane-body";
 
-    (game.options || []).forEach((option) => {
-      const button = document.createElement("button");
-      button.type = "button";
-      button.className = "quiz-option";
-      button.textContent = option;
-      button.addEventListener("click", () => {
-        if (option === "I don't know") {
-          resultNode.textContent = "Congratulations!";
-          resultNode.dataset.state = "success";
-        } else if (option === game.answer) {
-          resultNode.textContent = "Congratulations, you are lucky!";
-          resultNode.dataset.state = "success";
-        } else {
-          resultNode.textContent = "Sorry, try again.";
-          resultNode.dataset.state = "error";
+      const carousel = document.createElement("div");
+      carousel.className = "carousel";
+
+      const prevBtn = document.createElement("button");
+      prevBtn.type = "button";
+      prevBtn.className = "carousel-nav carousel-prev";
+      prevBtn.setAttribute("aria-label", "Previous frame");
+      prevBtn.innerHTML =
+        '<i class="bi bi-chevron-left" aria-hidden="true"></i>';
+
+      const nextBtn = document.createElement("button");
+      nextBtn.type = "button";
+      nextBtn.className = "carousel-nav carousel-next";
+      nextBtn.setAttribute("aria-label", "Next frame");
+      nextBtn.innerHTML =
+        '<i class="bi bi-chevron-right" aria-hidden="true"></i>';
+
+      const carouselMain = document.createElement("div");
+      carouselMain.className = "carousel-main";
+
+      const viewport = document.createElement("div");
+      viewport.className = "carousel-viewport";
+
+      const img = document.createElement("img");
+      img.className = "carousel-image";
+      img.alt = `${lane.title || "Comic"} frame`;
+      img.loading = "lazy";
+
+      const counter = document.createElement("span");
+      counter.className = "carousel-counter";
+
+      let currentIndex = 0;
+
+      function showFrame(nextIndex) {
+        if (!frames.length) {
+          viewport.innerHTML = "";
+          const ph = document.createElement("div");
+          ph.className = "media-placeholder carousel-placeholder";
+          ph.textContent = "No frames — add paths in config";
+          viewport.appendChild(ph);
+          counter.textContent = "";
+          prevBtn.disabled = true;
+          nextBtn.disabled = true;
+          return;
         }
+
+        const len = frames.length;
+        currentIndex = ((nextIndex % len) + len) % len;
+        if (!img.parentNode) {
+          viewport.innerHTML = "";
+          viewport.appendChild(img);
+        }
+        img.onerror = function onCarouselImgError() {
+          this.removeAttribute("src");
+          viewport.innerHTML = "";
+          const ph = document.createElement("div");
+          ph.className = "media-placeholder carousel-placeholder";
+          ph.textContent = `Frame ${currentIndex + 1} placeholder`;
+          viewport.appendChild(ph);
+        };
+        img.src = frames[currentIndex];
+        counter.textContent = `${currentIndex + 1} / ${len}`;
+        prevBtn.disabled = false;
+        nextBtn.disabled = false;
+      }
+
+      prevBtn.addEventListener("click", () => showFrame(currentIndex - 1));
+      nextBtn.addEventListener("click", () => showFrame(currentIndex + 1));
+
+      carouselMain.appendChild(viewport);
+      carouselMain.appendChild(counter);
+      carousel.appendChild(prevBtn);
+      carousel.appendChild(carouselMain);
+      carousel.appendChild(nextBtn);
+
+      showFrame(0);
+
+      const laneQuiz = document.createElement("div");
+      laneQuiz.className = "lane-quiz";
+
+      const laneResult = document.createElement("p");
+      laneResult.className = "lane-result";
+      laneResult.setAttribute("role", "status");
+
+      optionLabels.forEach((option) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "quiz-option";
+        button.textContent = option;
+        button.addEventListener("click", () => {
+          if (option === "I don't know") {
+            laneResult.textContent = "Congratulations!";
+            laneResult.dataset.state = "success";
+          } else if (option === laneAnswer) {
+            laneResult.textContent = "Congratulations, you are lucky!";
+            laneResult.dataset.state = "success";
+          } else {
+            laneResult.textContent = "Sorry, try again.";
+            laneResult.dataset.state = "error";
+          }
+        });
+        laneQuiz.appendChild(button);
       });
-      optionsRoot.appendChild(button);
+
+      laneQuiz.appendChild(laneResult);
+
+      laneBody.appendChild(carousel);
+      laneBody.appendChild(laneQuiz);
+      laneNode.appendChild(laneBody);
+      lanesRoot.appendChild(laneNode);
     });
   }
 

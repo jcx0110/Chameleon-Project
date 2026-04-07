@@ -32,6 +32,7 @@ window.SITE_DATA = {
   motivationGame: {
     prompt:
       "Pick the best option according to the comic clue in each lane. Correct answer is Middle cup.",
+    // Optional per lane: add `answer: "Middle cup"` (must match one string in options). If omitted, uses `answer` below.
     lanes: [
       {
         id: "language-memory",
