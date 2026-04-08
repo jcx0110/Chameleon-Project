@@ -328,10 +328,7 @@
         button.className = "quiz-option";
         button.textContent = option;
         button.addEventListener("click", () => {
-          if (option === "I don't know") {
-            laneResult.textContent = "Congratulations!";
-            laneResult.dataset.state = "success";
-          } else if (option === laneAnswer) {
+          if (option === laneAnswer) {
             laneResult.textContent = "Congratulations, you are lucky!";
             laneResult.dataset.state = "success";
           } else {
