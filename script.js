@@ -216,17 +216,32 @@
       const viewport = document.createElement("div");
       viewport.className = "carousel-viewport";
 
-      const img = document.createElement("img");
-      img.className = "carousel-image";
-      img.alt = `${lane.title || "Comic"} frame`;
-      img.loading = "lazy";
+      const strip = document.createElement("div");
+      strip.className = "carousel-strip";
+      const VISIBLE = 3;
+      const cellImages = [];
+      for (let c = 0; c < VISIBLE; c += 1) {
+        const cell = document.createElement("div");
+        cell.className = "carousel-cell";
+        const img = document.createElement("img");
+        img.className = "carousel-image";
+        img.alt = `${lane.title || "Comic"} frame ${c + 1}`;
+        img.loading = "lazy";
+        cell.appendChild(img);
+        strip.appendChild(cell);
+        cellImages.push(img);
+      }
+      viewport.appendChild(strip);
 
       const counter = document.createElement("span");
       counter.className = "carousel-counter";
 
-      let currentIndex = 0;
+      let startIndex = 0;
 
-      function showFrame(nextIndex) {
+      prevBtn.setAttribute("aria-label", "Show previous frames");
+      nextBtn.setAttribute("aria-label", "Show next frames");
+
+      function updateStrip() {
         if (!frames.length) {
           viewport.innerHTML = "";
           const ph = document.createElement("div");
@@ -239,28 +254,57 @@
           return;
         }
 
-        const len = frames.length;
-        currentIndex = ((nextIndex % len) + len) % len;
-        if (!img.parentNode) {
+        if (!strip.parentNode) {
           viewport.innerHTML = "";
-          viewport.appendChild(img);
+          viewport.appendChild(strip);
         }
-        img.onerror = function onCarouselImgError() {
-          this.removeAttribute("src");
-          viewport.innerHTML = "";
-          const ph = document.createElement("div");
-          ph.className = "media-placeholder carousel-placeholder";
-          ph.textContent = `Frame ${currentIndex + 1} placeholder`;
-          viewport.appendChild(ph);
-        };
-        img.src = frames[currentIndex];
-        counter.textContent = `${currentIndex + 1} / ${len}`;
-        prevBtn.disabled = false;
-        nextBtn.disabled = false;
+
+        const len = frames.length;
+        const maxStart = Math.max(0, len - VISIBLE);
+        startIndex = Math.min(Math.max(0, startIndex), maxStart);
+
+        cellImages.forEach((imgEl, i) => {
+          const idx = startIndex + i;
+          imgEl.onerror = function onCarouselImgError() {
+            this.removeAttribute("src");
+            this.style.display = "none";
+            const cell = this.parentElement;
+            if (!cell.querySelector(".carousel-cell-fallback")) {
+              const fb = document.createElement("div");
+              fb.className = "media-placeholder carousel-cell-fallback";
+              fb.textContent = `Frame ${idx + 1}`;
+              cell.appendChild(fb);
+            }
+          };
+          const cell = imgEl.parentElement;
+          const fb = cell.querySelector(".carousel-cell-fallback");
+          if (fb) {
+            fb.remove();
+          }
+          if (idx < len) {
+            imgEl.style.display = "";
+            imgEl.src = frames[idx];
+          } else {
+            imgEl.removeAttribute("src");
+            imgEl.style.display = "none";
+          }
+        });
+
+        const visibleCount = Math.min(VISIBLE, len - startIndex);
+        counter.textContent = `${startIndex + 1}–${startIndex + visibleCount} / ${len}`;
+
+        prevBtn.disabled = startIndex <= 0;
+        nextBtn.disabled = startIndex >= maxStart;
       }
 
-      prevBtn.addEventListener("click", () => showFrame(currentIndex - 1));
-      nextBtn.addEventListener("click", () => showFrame(currentIndex + 1));
+      prevBtn.addEventListener("click", () => {
+        startIndex -= 1;
+        updateStrip();
+      });
+      nextBtn.addEventListener("click", () => {
+        startIndex += 1;
+        updateStrip();
+      });
 
       carouselMain.appendChild(viewport);
       carouselMain.appendChild(counter);
@@ -268,7 +312,8 @@
       carousel.appendChild(carouselMain);
       carousel.appendChild(nextBtn);
 
-      showFrame(0);
+      startIndex = 0;
+      updateStrip();
 
       const laneQuiz = document.createElement("div");
       laneQuiz.className = "lane-quiz";

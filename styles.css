@@ -205,8 +205,9 @@ h2 {
 
 .carousel-viewport {
   width: 100%;
-  min-height: 200px;
-  aspect-ratio: 4 / 3;
+  height: 50px;
+  min-height: 50px;
+  max-height: 50px;
   border-radius: 8px;
   background: var(--surface-alt);
   border: 1px solid var(--border);
@@ -214,6 +215,26 @@ h2 {
   align-items: center;
   justify-content: center;
   overflow: hidden;
+}
+
+.carousel-strip {
+  display: flex;
+  align-items: center;
+  justify-content: stretch;
+  gap: 6px;
+  width: 100%;
+  height: 100%;
+  padding: 0 4px;
+  box-sizing: border-box;
+}
+
+.carousel-cell {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .carousel-image {
@@ -225,6 +246,19 @@ h2 {
   vertical-align: middle;
 }
 
+.carousel-cell-fallback {
+  padding: 2px 4px;
+  font-size: 0.65rem;
+  line-height: 1.2;
+  text-align: center;
+  color: var(--text-muted);
+  border: 1px dashed var(--border-strong);
+  border-radius: 4px;
+  background: var(--surface);
+  max-width: 100%;
+  overflow: hidden;
+}
+
 .carousel-placeholder.media-placeholder {
   aspect-ratio: unset;
   width: 100%;
@@ -232,6 +266,8 @@ h2 {
   min-height: 0;
   border: none;
   border-radius: 8px;
+  font-size: 0.75rem;
+  padding: 6px;
 }
 
 .carousel-counter {
