@@ -8,6 +8,8 @@
   --violet-deep: #52247f;
   --violet-soft: #efe4ff;
   --ui-solid: #7a4fcf;
+  --ui-pink: #c7448d;
+  --ui-blue: #347faf;
   --ui-soft: #efe4ff;
   --rose: #dd569c;
   --rose-soft: #ffe3f1;
@@ -379,6 +381,10 @@ sup {
   transform: scale(1.045);
 }
 
+.hero-actions .button:nth-child(1) { background: var(--ui-solid); }
+.hero-actions .button:nth-child(2) { background: var(--ui-pink); }
+.hero-actions .button:nth-child(3) { background: var(--ui-blue); }
+
 .hero-demo {
   width: 100%;
   margin: 46px 0 0;
@@ -430,7 +436,7 @@ sup {
   padding: 16px 24px;
   border-radius: var(--radius);
   color: var(--ink);
-  background: var(--ui-soft);
+  background: var(--blue-soft);
   font-size: 1rem;
   text-align: center;
 }
@@ -472,6 +478,10 @@ sup {
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 0.65rem;
 }
+
+.hero-principles article:nth-child(1) > span { background: var(--ui-solid); }
+.hero-principles article:nth-child(2) > span { background: var(--ui-pink); }
+.hero-principles article:nth-child(3) > span { background: var(--ui-blue); }
 
 .hero-principles div {
   display: grid;
@@ -677,7 +687,7 @@ h2 {
   border: 0;
   border-radius: var(--radius);
   color: var(--ink);
-  background: var(--ui-soft);
+  background: var(--rose-soft);
   font-size: clamp(1.35rem, 2.6vw, 2.1rem);
   font-weight: 600;
   line-height: 1.32;
@@ -740,6 +750,11 @@ h2 {
   background: var(--ui-soft);
 }
 
+.method-tab:nth-child(1).is-active { background: var(--violet-soft); }
+.method-tab:nth-child(2).is-active { background: var(--rose-soft); }
+.method-tab:nth-child(3).is-active { background: var(--blue-soft); }
+.method-tab:nth-child(4).is-active { background: #f5efff; }
+
 .method-tab span {
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 0.65rem;
@@ -785,7 +800,7 @@ h2 {
   right: 8%;
   left: 8%;
   height: 2px;
-  background: var(--ui-solid);
+  background: var(--ui-blue);
   opacity: 0.3;
 }
 
@@ -819,6 +834,11 @@ h2 {
   box-shadow: 0 0 0 8px rgba(221, 86, 156, 0.08), 0 6px 18px rgba(82, 36, 127, 0.14);
   transform: scale(1.07);
 }
+
+.method-node[data-method-node="write"].is-active { background: var(--violet-soft); }
+.method-node[data-method-node="propagate"].is-active { background: var(--rose-soft); }
+.method-node[data-method-node="address"].is-active { background: var(--blue-soft); }
+.method-node[data-method-node="consolidate"].is-active { background: #f5efff; }
 
 .method-node small {
   margin-top: 8px;
@@ -983,7 +1003,7 @@ h2 {
   padding: 27px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  background: var(--ui-soft);
+  background: var(--blue-soft);
   box-shadow: 0 2px 8px rgba(82, 36, 127, 0.08);
 }
 
@@ -994,7 +1014,7 @@ h2 {
   place-items: center;
   border-radius: 50%;
   color: white;
-  background: var(--ui-solid);
+  background: var(--ui-blue);
   font-size: 1.25rem;
   font-weight: 900;
   letter-spacing: -0.15em;
@@ -1023,7 +1043,7 @@ h2 {
   margin: -24px 0 28px;
   padding: 14px 18px;
   border-radius: 12px;
-  background: var(--ui-soft);
+  background: var(--rose-soft);
   color: var(--muted);
   font-size: 0.72rem;
 }
@@ -1084,6 +1104,10 @@ h2 {
   box-shadow: 0 4px 10px rgba(73, 69, 95, 0.3);
   transform: scale(1.05);
 }
+
+#demo-toggle { background: var(--ui-solid); }
+#demo-prev { color: white; background: var(--ui-pink); }
+#demo-next { color: white; background: var(--ui-blue); }
 
 .arrow-button {
   min-width: 33px;
@@ -1304,7 +1328,7 @@ h2 {
 
 .demo-dot.is-active {
   width: 26px;
-  background: var(--ui-solid);
+  background: var(--ui-blue);
 }
 
 .evaluation-section {
@@ -1477,7 +1501,7 @@ h2 {
 }
 
 .bar-ours .bar-fill {
-  background: var(--ui-solid);
+  background: var(--ui-pink);
 }
 
 .bar-value {
@@ -1533,6 +1557,10 @@ h2 {
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 0.62rem;
 }
+
+.evidence-card:nth-child(1) .evidence-number { background: var(--ui-solid); }
+.evidence-card:nth-child(2) .evidence-number { background: var(--ui-pink); }
+.evidence-card:nth-child(3) .evidence-number { background: var(--ui-blue); }
 
 .evidence-card h3 {
   margin-bottom: 15px;
@@ -1644,7 +1672,7 @@ h2 {
   padding: 7px 11px;
   border-radius: 100px;
   color: white;
-  background: var(--ui-solid);
+  background: var(--ui-blue);
   font-size: 0.6rem;
   cursor: pointer;
   transition: transform 150ms ease;
@@ -1673,7 +1701,7 @@ h2 {
   min-height: 76px;
   padding-inline: max(var(--page-pad), calc((100vw - var(--shell-max)) / 2));
   color: rgba(255, 255, 255, 0.82);
-  background: var(--gradient);
+  background: var(--violet-deep);
   font-size: 0.67rem;
 }
 
