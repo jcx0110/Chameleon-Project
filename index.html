@@ -3,74 +3,331 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>NeuroEmbody Project Page</title>
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    <meta
+      name="description"
+      content="Chameleon is a control-indexed prospective memory policy for visuomotor manipulation under observation–action delay."
     />
+    <meta name="theme-color" content="#f4f1e9" />
+    <title>Chameleon — Control-Indexed Prospective Memory</title>
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <header class="hero">
-      <div class="container">
-        <p id="conference" class="conference-tag"></p>
-        <div class="hero-layout">
-          <div class="hero-text">
-            <h1 id="paper-title"></h1>
-            <p id="paper-subtitle" class="subtitle"></p>
-            <p id="authors" class="authors"></p>
-            <div id="quick-links" class="quick-links"></div>
-          </div>
-          <div class="hero-media">
-            <video id="teaser-video" controls muted playsinline preload="metadata"></video>
-          </div>
-        </div>
-      </div>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="Chameleon home">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>Chameleon</span>
+      </a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="#motivation">Motivation</a>
+        <a href="#method">Method</a>
+        <a href="#dataset">Dataset</a>
+        <a href="#evaluation">Evaluation</a>
+        <a href="#evidence">Evidence</a>
+      </nav>
+      <a class="nav-paper" href="assets/papers/2603.24576v2.pdf">Paper <span aria-hidden="true">↗</span></a>
     </header>
 
-    <main class="container">
-      <section id="motivation" class="section">
-        <h2>Motivation</h2>
-        <p id="motivation-text"></p>
-        <p id="motivation-prompt" class="motivation-prompt"></p>
-        <div id="motivation-lanes" class="lanes"></div>
-      </section>
+    <main id="main-content">
+      <section class="hero section-shell" id="top">
+        <div class="hero-copy">
+          <div class="eyebrow-row">
+            <span class="pill pill-dark">arXiv 2026</span>
+            <span class="paper-id">2603.24576v2</span>
+          </div>
+          <h1>Chameleon</h1>
+          <p class="hero-title">Control-Indexed Prospective Memory for Visuomotor Manipulation</p>
+          <p class="hero-deck">
+            A causal visuomotor policy that remembers the right past, retrieves it for the current decision,
+            and turns recall into an action-ready state.
+          </p>
 
-      <section id="method" class="section">
-        <h2>Method</h2>
-        <div class="method-video-wrap">
-          <video id="method-video" controls muted playsinline preload="metadata"></video>
+          <div class="author-list" aria-label="Authors">
+            <span>Xinying Guo<sup>1,2,*</sup></span>
+            <span>Chenxi Jiang<sup>1,*</sup></span>
+            <span>Hyun Bin Kim<sup>1</sup></span>
+            <span>Yuhang Han<sup>3</sup></span>
+            <span>Ying Sun<sup>2</sup></span>
+            <span>Yang Xiao<sup>1</sup></span>
+            <span>Jianfei Yang<sup>1,†</sup></span>
+          </div>
+          <p class="affiliations">
+            <sup>1</sup>MARS Lab, Nanyang Technological University
+            <span>·</span> <sup>2</sup>A*STAR I²R
+            <span>·</span> <sup>3</sup>National University of Singapore
+          </p>
+
+          <div class="hero-actions" aria-label="Paper resources">
+            <a class="button button-primary" href="assets/papers/2603.24576v2.pdf">Read paper <span aria-hidden="true">↗</span></a>
+            <a class="button" href="https://arxiv.org/abs/2603.24576">arXiv <span aria-hidden="true">↗</span></a>
+            <a class="button" href="https://github.com/gxyes/MARS_Chameleon">Code <span aria-hidden="true">↗</span></a>
+          </div>
         </div>
-        <p id="method-text"></p>
+
+        <figure class="hero-demo media-frame">
+          <video
+            src="assets/videos/video1 - teaser.mp4"
+            autoplay
+            muted
+            loop
+            playsinline
+            controls
+            preload="metadata"
+            aria-label="Chameleon teaser demonstration"
+          ></video>
+          <figcaption>
+            <span class="live-dot" aria-hidden="true"></span>
+            Real-robot memory under observation–action delay
+          </figcaption>
+        </figure>
+
+        <div class="hero-principles" aria-label="Three requirements of policy-facing memory">
+          <article>
+            <span>01</span>
+            <div><strong>Separable</strong><small>Keep similar histories distinct.</small></div>
+          </article>
+          <article>
+            <span>02</span>
+            <div><strong>Addressable</strong><small>Recall what the decision asks for.</small></div>
+          </article>
+          <article>
+            <span>03</span>
+            <div><strong>Prospective</strong><small>Make the right past actionable.</small></div>
+          </article>
+        </div>
       </section>
 
-      <section id="dataset" class="section">
-        <h2>Dataset</h2>
-        <p id="dataset-text"></p>
-        <div id="dataset-task-grid" class="grid"></div>
+      <section class="content-section section-shell" id="motivation">
+        <div class="section-heading split-heading">
+          <div>
+            <p class="section-kicker">Motivation</p>
+            <h2>The clue disappears.<br />The decision remains.</h2>
+          </div>
+          <p>
+            In long-horizon manipulation, the information that determines an action may appear long before
+            the robot needs to act. At the decision point, the same visible scene can require different actions
+            depending on its history. We call this gap <strong>observation–action delay</strong>.
+          </p>
+        </div>
+
+        <div class="delay-story" aria-label="Observation-action delay example">
+          <div class="story-track" aria-hidden="true"></div>
+          <article class="story-step">
+            <span class="story-index">t<sub>0</sub></span>
+            <div class="story-symbol reveal-symbol"><i></i><i></i><i></i><b></b></div>
+            <h3>Observe</h3>
+            <p>The ball is visible under one cup.</p>
+          </article>
+          <article class="story-step">
+            <span class="story-index">t<sub>1…n</sub></span>
+            <div class="story-symbol shuffle-symbol"><i></i><i></i><i></i><b>↝</b></div>
+            <h3>Wait &amp; transform</h3>
+            <p>Cups move while the evidence is occluded.</p>
+          </article>
+          <article class="story-step story-decision">
+            <span class="story-index">t<sub>d</sub></span>
+            <div class="story-symbol choose-symbol"><i></i><i></i><i></i><b>?</b></div>
+            <h3>Decide</h3>
+            <p>The current frame alone is ambiguous.</p>
+          </article>
+          <article class="story-step story-action">
+            <span class="story-index">t<sub>d+1</sub></span>
+            <div class="story-symbol action-symbol"><i></i><i></i><i></i><b>✓</b></div>
+            <h3>Act from memory</h3>
+            <p>The correct choice depends on the earlier event.</p>
+          </article>
+        </div>
+
+        <blockquote class="thesis">
+          <span>“</span>
+          Robot memory should not merely store more of the past. It should make the right past actionable at
+          the right moment.
+        </blockquote>
       </section>
 
-      <section id="demos" class="section">
-        <h2>Demos</h2>
-        <div id="demo-grid" class="grid"></div>
+      <section class="content-section method-section" id="method">
+        <div class="section-shell">
+          <div class="section-heading split-heading method-heading">
+            <div>
+              <p class="section-kicker">Method</p>
+              <h2>Control-indexed<br />prospective memory</h2>
+            </div>
+            <p>
+              Chameleon runs a causal <strong>write–propagate–address–consolidate</strong> loop. Select a stage
+              to inspect how event evidence becomes a policy-facing working state.
+            </p>
+          </div>
+
+          <div class="method-interactive">
+            <div class="method-tabs" role="tablist" aria-label="Chameleon memory stages"></div>
+
+            <div class="method-workbench">
+              <div class="method-diagram" aria-label="Interactive Chameleon method diagram">
+                <div class="signal-line" aria-hidden="true"></div>
+                <div class="method-node" data-method-node="write">
+                  <span class="node-glyph token-glyph" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+                  <small>Embodied event</small>
+                  <strong>Tokens</strong>
+                </div>
+                <span class="method-arrow" aria-hidden="true">→</span>
+                <div class="method-node" data-method-node="propagate">
+                  <span class="node-glyph trace-glyph" aria-hidden="true"><i></i><i></i><i></i></span>
+                  <small>Episode-level</small>
+                  <strong>Traces</strong>
+                </div>
+                <span class="method-arrow" aria-hidden="true">→</span>
+                <div class="method-node" data-method-node="address">
+                  <span class="node-glyph query-glyph" aria-hidden="true"><i></i><b></b></span>
+                  <small>Control-indexed</small>
+                  <strong>Recall</strong>
+                </div>
+                <span class="method-arrow" aria-hidden="true">→</span>
+                <div class="method-node" data-method-node="consolidate">
+                  <span class="node-glyph state-glyph" aria-hidden="true"><i></i><b>→</b></span>
+                  <small>Prospective</small>
+                  <strong>State</strong>
+                </div>
+              </div>
+
+              <article class="method-detail" aria-live="polite">
+                <p class="detail-label" id="method-detail-label"></p>
+                <h3 id="method-detail-title"></h3>
+                <p id="method-detail-description"></p>
+                <ul id="method-detail-points"></ul>
+                <div class="method-note" id="method-detail-note"></div>
+              </article>
+            </div>
+          </div>
+
+          <div class="jepa-strip">
+            <div class="jepa-mark">C<span>J</span></div>
+            <div>
+              <p class="section-kicker">Training-only objective</p>
+              <h3>Control-JEPA makes memory prospective.</h3>
+            </div>
+            <p>
+              The causal working state predicts future control contexts—not future pixels—so recalled evidence
+              is shaped around what the robot will need to do next. The target branch is removed at inference.
+            </p>
+          </div>
+        </div>
       </section>
 
-      <section id="acknowledgement" class="section">
-        <h2>Acknowledgement</h2>
-        <p id="acknowledgement-text"></p>
+      <section class="content-section section-shell" id="dataset">
+        <div class="section-heading split-heading">
+          <div>
+            <p class="section-kicker">Dataset + demos</p>
+            <h2>Camo-Dataset</h2>
+          </div>
+          <p>
+            A real-robot benchmark designed to isolate memory-dependent decisions from manipulation execution:
+            three tasks, 120 teleoperated demonstrations per task, two RGB views, and deliberately ambiguous
+            decision scenes.
+          </p>
+        </div>
+
+        <div class="dataset-facts" aria-label="Camo-Dataset facts">
+          <span><strong>UR5</strong> real robot</span>
+          <span><strong>360</strong> demonstrations</span>
+          <span><strong>2</strong> RGB viewpoints</span>
+          <span><strong>3</strong> delayed-control tasks</span>
+        </div>
+
+        <div class="demo-carousel" aria-roledescription="carousel" aria-label="Camo-Dataset demonstrations">
+          <div class="carousel-topline">
+            <p><span id="demo-current">01</span> / <span id="demo-total">01</span></p>
+            <div class="carousel-controls">
+              <button id="demo-toggle" class="icon-button" type="button" aria-label="Pause automatic slide rotation">Pause</button>
+              <button id="demo-prev" class="icon-button arrow-button" type="button" aria-label="Previous demo">←</button>
+              <button id="demo-next" class="icon-button arrow-button" type="button" aria-label="Next demo">→</button>
+            </div>
+          </div>
+          <div class="demo-viewport">
+            <div id="demo-track" class="demo-track"></div>
+          </div>
+          <div id="demo-dots" class="demo-dots" aria-label="Choose a demo"></div>
+        </div>
       </section>
 
-      <section id="citation" class="section">
-        <h2>Citations</h2>
-        <pre id="bibtex-box" class="bibtex"></pre>
-        <button id="copy-bibtex" type="button">Copy BibTeX</button>
+      <section class="content-section evaluation-section" id="evaluation">
+        <div class="section-shell">
+          <div class="section-heading split-heading">
+            <div>
+              <p class="section-kicker">Evaluation + results</p>
+              <h2>Remembering changes<br />what the robot can do.</h2>
+            </div>
+            <p>
+              Camo-Dataset reports manipulation success (MSR), history-correct decision success (DSR), and
+              end-to-end success (SR) separately. Chameleon improves the decision—not only the motion.
+            </p>
+          </div>
+
+          <div id="result-highlights" class="result-highlights"></div>
+
+          <div class="results-panel">
+            <div class="results-copy">
+              <p class="section-kicker">Real-robot diagnostic</p>
+              <h3>Camo-Dataset average</h3>
+              <p>Compared with the strongest protocol-matched imitation baseline, Diffusion Policy.</p>
+              <div class="metric-legend">
+                <span><i class="legend-baseline"></i> Diffusion Policy</span>
+                <span><i class="legend-ours"></i> Chameleon</span>
+              </div>
+            </div>
+            <div id="result-bars" class="result-bars"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section section-shell" id="evidence">
+        <div class="section-heading split-heading">
+          <div>
+            <p class="section-kicker">Mechanistic evidence</p>
+            <h2>What does the memory<br />actually learn?</h2>
+          </div>
+          <p>
+            Representation probes and controlled interventions test whether the three intended properties are
+            present inside the learned policy—and whether they drive its behavior.
+          </p>
+        </div>
+
+        <div id="evidence-grid" class="evidence-grid"></div>
+      </section>
+
+      <section class="content-section citation-section" id="citation">
+        <div class="section-shell citation-layout">
+          <div class="citation-copy">
+            <p class="section-kicker">Citation + resources</p>
+            <h2>Build on Chameleon.</h2>
+            <p>
+              Read the full paper for architecture details, protocol definitions, per-task results, ablations,
+              hyperparameters, and limitations.
+            </p>
+            <div class="resource-list">
+              <a href="assets/papers/2603.24576v2.pdf"><span>Paper PDF</span><small>4.6 MB ↗</small></a>
+              <a href="https://arxiv.org/abs/2603.24576"><span>arXiv</span><small>2603.24576 ↗</small></a>
+              <a href="https://github.com/gxyes/MARS_Chameleon"><span>Source code</span><small>GitHub ↗</small></a>
+            </div>
+          </div>
+          <div class="bibtex-card">
+            <div class="bibtex-head">
+              <span>BibTeX</span>
+              <button id="copy-bibtex" type="button">Copy citation</button>
+            </div>
+            <pre id="bibtex-box"></pre>
+          </div>
+        </div>
       </section>
     </main>
 
-    <footer class="footer">
-      <div class="container">
-        <small>Template for academic project pages on GitHub Pages.</small>
+    <footer class="site-footer section-shell">
+      <div>
+        <strong>Chameleon</strong>
+        <span>Control-Indexed Prospective Memory</span>
       </div>
+      <p>© 2026 MARS Lab · Nanyang Technological University</p>
     </footer>
 
     <script src="config/site-data.js"></script>

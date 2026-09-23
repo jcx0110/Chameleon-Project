@@ -1,31 +1,24 @@
-# Assets Guide
+# Chameleon Website Assets
 
-This folder stores all static resources for the project page.
+Static media used by the Chameleon project page lives here.
 
-## Suggested structure
+## Current structure
 
-- `assets/images/`: paper figures and teaser images
-- `assets/demos/`: demo covers, videos, and preview resources
-- `assets/videos/`: teaser and method animation videos
-- `assets/images/motivation/`: comic frames for four motivation lanes
-- `assets/images/dataset/`: covers for three dataset interactive tasks
+- `papers/2603.24576v2.pdf` — canonical archived paper
+- `videos/video1 - teaser.mp4` — hero and overview demo
 
-## Required placeholders in `config/site-data.js`
+## Adding dataset demos
 
-- `paper.teaser`: optional teaser image path
-- `paper.teaser`: teaser video path
-- `images[].thumbnail`: gallery card image
-- `images[].full`: full-resolution image or page
-- `demos[].cover`: demo card cover
-- `demos[].url`: destination URL for live demo or video
-- `motivationGame.lanes[].comic[]`: comic frames per lane
-- `methodMedia.video`: method signal-flow video
-- `datasetTasks[].cover` / `datasetTasks[].url`: dataset interactive task card and link
+1. Put the new videos under `assets/videos/` (or create `assets/demos/`).
+2. Open `config/site-data.js`.
+3. Find the matching item in `SITE_DATA.demos`.
+4. Set `mediaType` to `"video"` and set `src` to the local asset path.
+5. Optionally set a poster image with `poster`.
 
-## Replace workflow
+The circular carousel, controls, touch gestures, and video pause/play behavior are handled by `script.js`.
 
-1. Put your files under `assets/images/` or `assets/demos/`.
-2. Update corresponding paths in `config/site-data.js`.
-3. Reload `index.html` to verify rendering.
+## Content sources
 
-If a file path is missing or invalid, the page will show a placeholder block instead of breaking layout.
+- Page copy and reported values are derived from the archived v2 paper.
+- `PAPER_CONTEXT.md` contains the compact working reference for future edits.
+- The PDF is authoritative when a number or claim needs to be checked.
