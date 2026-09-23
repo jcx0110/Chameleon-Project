@@ -7,6 +7,7 @@
   --violet: #7a4fcf;
   --violet-deep: #52247f;
   --violet-soft: #efe4ff;
+  --icon-solid: #7a4fcf;
   --rose: #dd569c;
   --rose-soft: #ffe3f1;
   --orange: #f2a04b;
@@ -466,7 +467,7 @@ sup {
   place-items: center;
   border-radius: 50%;
   color: white;
-  background: var(--gradient);
+  background: var(--icon-solid);
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 0.65rem;
 }
@@ -992,7 +993,7 @@ h2 {
   place-items: center;
   border-radius: 50%;
   color: white;
-  background: var(--gradient);
+  background: var(--icon-solid);
   font-size: 1.25rem;
   font-weight: 900;
   letter-spacing: -0.15em;
@@ -1302,7 +1303,7 @@ h2 {
 
 .demo-dot.is-active {
   width: 26px;
-  background: var(--gradient);
+  background: var(--icon-solid);
 }
 
 .evaluation-section {
@@ -1527,7 +1528,7 @@ h2 {
   place-items: center;
   border-radius: 50%;
   color: white;
-  background: var(--gradient);
+  background: var(--icon-solid);
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 0.62rem;
 }
