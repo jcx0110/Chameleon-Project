@@ -213,7 +213,7 @@ h3 {
   top: 0;
   left: 50%;
   z-index: -1;
-  width: min(100vw, 1660px);
+  width: 100vw;
   height: 680px;
   background: var(--ink-splatter) center / cover no-repeat,
     radial-gradient(ellipse at 13% 18%, rgba(122, 79, 207, 0.17), transparent 31%),
