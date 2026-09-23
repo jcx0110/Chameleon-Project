@@ -20,13 +20,39 @@
   --pink-soft: var(--rose-soft);
   --wine: var(--violet-deep);
   --cream: #fbf6ff;
-  --gradient: linear-gradient(112deg, #6940bf 0%, #a548bc 30%, #df579d 60%, #ed76ab 76%, #4d9bd0 91%, #f2a04b 100%);
-  --gradient-soft: linear-gradient(112deg, #eee5ff 0%, #f6e5ff 30%, #ffe2f0 66%, #e6f4ff 90%, #fff0dc 100%);
-  --gradient-faint: linear-gradient(112deg, #faf6ff 0%, #fff6fc 45%, #fff4fa 72%, #f3f9ff 91%, #fffaf3 100%);
-  --mottle: radial-gradient(circle at 14% 20%, rgba(122, 79, 207, 0.18), transparent 29%),
-    radial-gradient(circle at 84% 16%, rgba(221, 86, 156, 0.17), transparent 27%),
-    radial-gradient(circle at 72% 78%, rgba(75, 152, 207, 0.1), transparent 25%),
-    radial-gradient(circle at 24% 84%, rgba(242, 160, 75, 0.09), transparent 22%),
+  --gradient: radial-gradient(ellipse at 9% 25%, #7248c7 0 13%, transparent 25%),
+    radial-gradient(ellipse at 27% 74%, #e15a9f 0 18%, transparent 34%),
+    radial-gradient(ellipse at 45% 23%, #4b98cf 0 18%, transparent 34%),
+    radial-gradient(ellipse at 63% 72%, #7248c7 0 17%, transparent 33%),
+    radial-gradient(ellipse at 80% 25%, #df569d 0 17%, transparent 33%),
+    radial-gradient(ellipse at 94% 70%, #4b98cf 0 14%, transparent 27%),
+    radial-gradient(circle at 97% 17%, #f2a04b 0 2.5%, transparent 5%),
+    #b953b5;
+  --gradient-soft: radial-gradient(ellipse at 9% 27%, #e9ddff 0 14%, transparent 27%),
+    radial-gradient(ellipse at 28% 73%, #ffddec 0 18%, transparent 34%),
+    radial-gradient(ellipse at 46% 24%, #dcedff 0 18%, transparent 34%),
+    radial-gradient(ellipse at 64% 72%, #eadfff 0 17%, transparent 33%),
+    radial-gradient(ellipse at 81% 25%, #ffe0ef 0 17%, transparent 33%),
+    radial-gradient(ellipse at 94% 70%, #deefff 0 14%, transparent 27%),
+    radial-gradient(circle at 97% 17%, #ffead0 0 2.5%, transparent 5%),
+    #f5e8fa;
+  --gradient-faint: radial-gradient(ellipse at 9% 27%, #f4edff 0 14%, transparent 27%),
+    radial-gradient(ellipse at 28% 73%, #fff0f7 0 18%, transparent 34%),
+    radial-gradient(ellipse at 46% 24%, #edf7ff 0 18%, transparent 34%),
+    radial-gradient(ellipse at 64% 72%, #f3edff 0 17%, transparent 33%),
+    radial-gradient(ellipse at 81% 25%, #fff0f7 0 17%, transparent 33%),
+    radial-gradient(ellipse at 94% 70%, #edf7ff 0 14%, transparent 27%),
+    radial-gradient(circle at 97% 17%, #fff6e9 0 2.5%, transparent 5%),
+    #fcf7ff;
+  --ink-splatter: url("assets/images/chameleon-ink-splatter.svg");
+  --text-ink: var(--ink-splatter), var(--gradient);
+  --mottle: radial-gradient(circle at 12% 20%, rgba(122, 79, 207, 0.16), transparent 29%),
+    radial-gradient(circle at 82% 16%, rgba(221, 86, 156, 0.16), transparent 27%),
+    radial-gradient(circle at 67% 78%, rgba(75, 152, 207, 0.16), transparent 27%),
+    radial-gradient(circle at 28% 76%, rgba(221, 86, 156, 0.11), transparent 24%),
+    radial-gradient(circle at 48% 18%, rgba(75, 152, 207, 0.1), transparent 23%),
+    radial-gradient(circle at 92% 82%, rgba(122, 79, 207, 0.1), transparent 22%),
+    radial-gradient(circle at 22% 88%, rgba(242, 160, 75, 0.055), transparent 17%),
     var(--gradient-faint);
   --radius: 18px;
   --radius-lg: 26px;
@@ -188,14 +214,18 @@ h3 {
   z-index: -1;
   width: min(100vw, 1660px);
   height: 680px;
-  background: radial-gradient(ellipse at 17% 14%, rgba(122, 79, 207, 0.2), transparent 34%),
-    radial-gradient(ellipse at 82% 17%, rgba(221, 86, 156, 0.2), transparent 32%),
-    radial-gradient(ellipse at 66% 58%, rgba(237, 118, 171, 0.11), transparent 30%),
-    radial-gradient(ellipse at 28% 70%, rgba(75, 152, 207, 0.09), transparent 27%),
-    radial-gradient(ellipse at 87% 65%, rgba(242, 160, 75, 0.08), transparent 22%);
+  background: var(--ink-splatter) center / cover no-repeat,
+    radial-gradient(ellipse at 13% 18%, rgba(122, 79, 207, 0.17), transparent 31%),
+    radial-gradient(ellipse at 82% 17%, rgba(221, 86, 156, 0.17), transparent 30%),
+    radial-gradient(ellipse at 52% 67%, rgba(75, 152, 207, 0.17), transparent 31%),
+    radial-gradient(ellipse at 29% 72%, rgba(221, 86, 156, 0.12), transparent 25%),
+    radial-gradient(ellipse at 63% 20%, rgba(122, 79, 207, 0.12), transparent 25%),
+    radial-gradient(ellipse at 90% 70%, rgba(75, 152, 207, 0.12), transparent 23%),
+    radial-gradient(circle at 19% 84%, rgba(242, 160, 75, 0.055), transparent 14%);
   content: "";
   -webkit-mask-image: linear-gradient(to bottom, black 10%, transparent 96%);
   mask-image: linear-gradient(to bottom, black 10%, transparent 96%);
+  opacity: 0.48;
   pointer-events: none;
   transform: translateX(-50%);
 }
@@ -254,7 +284,7 @@ h3 {
 
 h1 {
   margin: 0 0 10px;
-  background: var(--gradient);
+  background: var(--ink-splatter) center / 100% 100% no-repeat, var(--gradient);
   background-clip: text;
   color: transparent;
   font-size: clamp(4rem, 8.6vw, 7.5rem);
@@ -268,7 +298,7 @@ h1 {
 .hero-title {
   max-width: 1100px;
   margin: 24px auto 28px;
-  background: var(--gradient);
+  background: var(--ink-splatter) center / 100% 100% no-repeat, var(--gradient);
   background-clip: text;
   color: transparent;
   font-size: clamp(2rem, 4.25vw, 3.7rem);
@@ -427,7 +457,7 @@ sup {
 
 .hero-principles article:nth-child(1) { background: linear-gradient(145deg, #eee5ff, #f9e9ff); }
 .hero-principles article:nth-child(2) { background: linear-gradient(145deg, #ffe4f2, #f5e5ff); }
-.hero-principles article:nth-child(3) { background: linear-gradient(145deg, #f1e6ff, #ffe7f2 72%, #fff0dd); }
+.hero-principles article:nth-child(3) { background: linear-gradient(145deg, #e4f3ff, #e9edff 72%, #fff0dd); }
 
 .hero-principles article > span {
   display: grid;
@@ -488,7 +518,7 @@ sup {
 
 h2 {
   margin: 0;
-  background: var(--gradient);
+  background: var(--ink-splatter) center / 100% 100% no-repeat, var(--gradient);
   background-clip: text;
   color: transparent;
   font-size: clamp(2.4rem, 5.5vw, 4.8rem);
@@ -1479,7 +1509,7 @@ h2 {
 
 .evidence-card:nth-child(1) { background: linear-gradient(160deg, #fff 48%, #eee2ff 76%, #fae6ff); }
 .evidence-card:nth-child(2) { background: linear-gradient(160deg, #fff 48%, #ffe3f1 76%, #f4e4ff); }
-.evidence-card:nth-child(3) { background: linear-gradient(160deg, #fff 48%, #efe3ff 74%, #e5f4ff 90%, #fff0dc); }
+.evidence-card:nth-child(3) { background: linear-gradient(160deg, #fff 48%, #e4f3ff 76%, #e7edff 92%, #fff0dc); }
 
 .evidence-head {
   justify-content: space-between;

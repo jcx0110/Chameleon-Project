@@ -7,6 +7,7 @@ Static media used by the Chameleon project page lives here.
 - `papers/2603.24576v2.pdf` — canonical archived paper
 - `favicon-chameleon.png` — tightly framed full-chameleon favicon for browser tabs and saved links
 - `images/chameleon-mascot.png` — lightweight transparent brand mascot used in the site header
+- `images/chameleon-ink-splatter.svg` — transparent mottled ink texture used across headings and ambient color fields
 - `videos/supplementary-video-final.mp4` — hero and overview demo (web-optimized copy of the final supplementary video)
 - `videos/video1 - teaser.mp4` — previous teaser, retained as a legacy asset
 

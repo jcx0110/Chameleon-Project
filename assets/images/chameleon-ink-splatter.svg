@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 360" preserveAspectRatio="none">
+  <defs>
+    <filter id="ink-bleed" x="-18%" y="-30%" width="136%" height="160%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.012 0.035" numOctaves="3" seed="17" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="34" xChannelSelector="R" yChannelSelector="B"/>
+      <feGaussianBlur stdDeviation="0.45"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#ink-bleed)">
+    <path fill="#4b98cf" fill-opacity=".74" d="M40 228C86 110 227 63 346 112c72 30 100 92 66 145-43 66-142 71-223 52-72-16-131-27-149-81Z"/>
+    <path fill="#dd569c" fill-opacity=".82" d="M257 68c94-52 247-37 329 28 77 61 53 153-31 193-89 43-244 23-317-43-63-57-48-140 19-178Z"/>
+    <path fill="#4b98cf" fill-opacity=".82" d="M575 181c32-102 166-151 278-110 83 31 126 101 91 160-41 69-155 90-251 61-83-25-140-63-118-111Z"/>
+    <path fill="#e864a7" fill-opacity=".77" d="M822 72c81-57 216-39 291 37 62 63 47 151-34 184-93 38-226-2-281-74-43-57-28-111 24-147Z"/>
+    <path fill="#7248c7" fill-opacity=".76" d="M-22 92C31 35 124 31 173 75c39 36 17 91-42 114-67 26-139 2-162-40-11-20-4-39 9-57Z"/>
+    <path fill="#7248c7" fill-opacity=".75" d="M391 210c38-87 151-129 249-98 82 26 119 92 79 148-46 64-154 77-242 45-72-26-108-61-86-95Z"/>
+    <path fill="#7248c7" fill-opacity=".62" d="M634 14c43-28 110-14 131 28 18 36-20 73-71 70-48-3-87-30-80-62 3-15 10-27 20-36Z"/>
+    <path fill="#6a3db7" fill-opacity=".58" d="M1057 224c44-35 118-24 149 21 28 40-5 89-62 93-57 5-111-28-112-72 0-17 9-31 25-42Z"/>
+  </g>
+
+  <g fill="#f2a04b" fill-opacity=".88">
+    <circle cx="104" cy="273" r="7"/><circle cx="147" cy="319" r="3"/><circle cx="215" cy="46" r="4"/>
+    <circle cx="465" cy="315" r="6"/><circle cx="514" cy="333" r="3"/><circle cx="759" cy="42" r="5"/>
+    <circle cx="986" cy="304" r="7"/><circle cx="1032" cy="327" r="3"/><circle cx="1144" cy="69" r="4"/>
+  </g>
+
+  <g fill="#dd569c" fill-opacity=".66">
+    <circle cx="29" cy="287" r="7"/><circle cx="72" cy="323" r="4"/><circle cx="382" cy="31" r="7"/>
+    <circle cx="604" cy="319" r="8"/><circle cx="689" cy="338" r="4"/><circle cx="916" cy="27" r="6"/>
+  </g>
+
+  <g fill="#4b98cf" fill-opacity=".64">
+    <circle cx="318" cy="326" r="6"/><circle cx="555" cy="42" r="5"/><circle cx="796" cy="328" r="7"/>
+    <circle cx="1093" cy="32" r="5"/><circle cx="1170" cy="278" r="7"/>
+  </g>
+</svg>
