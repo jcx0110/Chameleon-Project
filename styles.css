@@ -253,6 +253,20 @@ h1 {
   font-weight: 620;
 }
 
+.author-list a {
+  text-decoration: underline;
+  text-decoration-color: rgba(47, 134, 202, 0.34);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+  transition: color 160ms ease, text-decoration-color 160ms ease;
+}
+
+.author-list a:hover,
+.author-list a:focus-visible {
+  color: var(--blue-deep);
+  text-decoration-color: var(--pink);
+}
+
 sup {
   position: relative;
   top: -0.15em;
