@@ -5,7 +5,8 @@ Static media used by the Chameleon project page lives here.
 ## Current structure
 
 - `papers/2603.24576v2.pdf` — canonical archived paper
-- `videos/video1 - teaser.mp4` — hero and overview demo
+- `videos/supplementary-video-final.mp4` — hero and overview demo (web-optimized copy of the final supplementary video)
+- `videos/video1 - teaser.mp4` — previous teaser, retained as a legacy asset
 
 ## Adding dataset demos
 

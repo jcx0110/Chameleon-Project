@@ -71,7 +71,7 @@ window.SITE_DATA = {
       description:
         "Watch observation–action delay unfold across the real-robot tasks used to diagnose memory-dependent control.",
       mediaType: "video",
-      src: "assets/videos/video1 - teaser.mp4",
+      src: "assets/videos/supplementary-video-final.mp4",
       poster: "",
       tags: ["Real robot", "Causal policy", "Long horizon"]
     },
