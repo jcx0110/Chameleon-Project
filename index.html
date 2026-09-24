@@ -33,7 +33,8 @@
       <nav class="site-nav" aria-label="Primary navigation">
         <a href="#motivation">Motivation</a>
         <a href="#method">Method</a>
-        <a href="#dataset">Dataset</a>
+        <a href="#dataset">Camo-Dataset</a>
+        <a href="#results">Results</a>
         <a href="#evaluation">Evaluation</a>
         <a href="#evidence">Evidence</a>
       </nav>
@@ -163,44 +164,74 @@
       <section class="content-section section-shell" id="dataset">
         <div class="section-heading split-heading">
           <div>
-            <p class="section-kicker">Dataset + demos</p>
+            <p class="section-kicker">Real-robot benchmark</p>
             <h2>Camo-Dataset</h2>
           </div>
           <p>
-            A real-robot benchmark designed to isolate memory-dependent decisions from manipulation execution:
-            three tasks, 120 teleoperated demonstrations per task, two RGB views, and deliberately ambiguous
-            decision scenes.
+            Each episode shows the evidence early, then hides, moves or repeats it until the scene no longer
+            tells the robot what to do. At that aliased decision point, look-alike scenes call for different
+            actions, so a policy can only succeed by recovering the right past.
           </p>
         </div>
 
         <div class="dataset-facts" aria-label="Camo-Dataset facts">
-          <span><strong>UR5</strong> real robot</span>
-          <span><strong>360</strong> demonstrations</span>
-          <span><strong>2</strong> RGB viewpoints</span>
-          <span><strong>3</strong> delayed-control tasks</span>
+          <span><strong>UR5</strong> arm with a Robotiq Hand-E gripper</span>
+          <span><strong>2</strong> RGB views, wrist and third-person</span>
+          <span><strong>120</strong> teleoperated demos per task</span>
+          <span><strong>Balanced</strong> over the hidden variable, so chance is exact</span>
         </div>
 
-        <div class="demo-carousel" aria-roledescription="carousel" aria-label="Camo-Dataset demonstrations">
-          <div class="carousel-topline">
-            <p><span id="demo-current">01</span> / <span id="demo-total">01</span></p>
-            <div class="carousel-controls">
-              <button id="demo-toggle" class="icon-button" type="button" aria-label="Pause automatic slide rotation">Pause</button>
-              <button id="demo-prev" class="icon-button arrow-button" type="button" aria-label="Previous demo">←</button>
-              <button id="demo-next" class="icon-button arrow-button" type="button" aria-label="Next demo">→</button>
-            </div>
-          </div>
-          <div class="demo-viewport">
-            <div id="demo-track" class="demo-track"></div>
-          </div>
-          <div id="demo-dots" class="demo-dots" aria-label="Choose a demo"></div>
+        <div id="camo-tasks" class="camo-tasks"></div>
+
+        <div class="camo-metrics" aria-label="Camo-Dataset metrics">
+          <p class="camo-metrics-lede">
+            Scoring separates motor errors from memory errors: a policy can execute a clean grasp and still pick
+            the wrong target.
+          </p>
+          <dl>
+            <div><dt>MSR</dt><dd>Manipulation success. A valid manipulation, whichever target it picks.</dd></div>
+            <div><dt>DSR</dt><dd>Decision success. The history-correct target or subgoal, given a valid manipulation.</dd></div>
+            <div><dt>SR</dt><dd>End-to-end success. Both at once.</dd></div>
+          </dl>
         </div>
       </section>
 
+      <section class="content-section results-section" id="results">
+        <div class="section-shell">
+          <div class="section-heading split-heading">
+            <div>
+              <p class="section-kicker">Results</p>
+              <h2>Chameleon in action</h2>
+            </div>
+            <p>
+              Real-robot rollouts on Camo-Dataset first, grouped by task and by the hidden value each episode
+              has to remember. Then one successful rollout for every task in the three public simulation
+              benchmarks.
+            </p>
+          </div>
+
+          <div class="demo-block">
+            <div class="demo-block-head">
+              <h3>Real robot</h3>
+              <p>Chameleon rollouts on Camo-Dataset. Click a phase to jump to it.</p>
+            </div>
+            <div id="real-demos" class="real-demos"></div>
+          </div>
+
+          <div class="demo-block">
+            <div class="demo-block-head">
+              <h3>Simulation</h3>
+              <p>One successful rollout per task, shown from the third-person camera.</p>
+            </div>
+            <div id="sim-demos" class="sim-demos"></div>
+          </div>
+        </div>
+      </section>
       <section class="content-section evaluation-section" id="evaluation">
         <div class="section-shell">
           <div class="section-heading split-heading">
             <div>
-              <p class="section-kicker">Evaluation + results</p>
+              <p class="section-kicker">Evaluation</p>
               <h2>Memory changes what the robot can do.</h2>
             </div>
             <p>
@@ -222,6 +253,16 @@
               </div>
             </div>
             <div id="result-bars" class="result-bars"></div>
+          </div>
+
+          <div class="camo-table-card">
+            <div class="camo-table-head">
+              <h3>Camo-Dataset per task</h3>
+              <p>DSR / SR (%) for each task against the protocol-matched imitation baselines.</p>
+            </div>
+            <div class="camo-table-scroll">
+              <table id="camo-table" class="camo-table"></table>
+            </div>
           </div>
         </div>
       </section>

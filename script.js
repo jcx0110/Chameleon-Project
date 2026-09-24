@@ -8,6 +8,7 @@
 
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const byId = (id) => document.getElementById(id);
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 
   function element(tag, className, text) {
     const node = document.createElement(tag);
@@ -17,172 +18,394 @@
   }
 
 
-  function makeDemoMedia(item) {
-    const media = element("div", "demo-media");
+  function renderCamoTasks() {
+    const root = byId("camo-tasks");
+    if (!root) return;
 
-    if (item.mediaType === "video" && item.src) {
-      const video = document.createElement("video");
-      video.src = item.src;
-      video.poster = item.poster || "";
-      video.muted = true;
-      video.loop = true;
-      video.playsInline = true;
-      video.controls = true;
-      video.preload = "metadata";
-      video.setAttribute("aria-label", `${item.title} demonstration`);
-      media.appendChild(video);
-      return media;
-    }
+    (data.camoTasks || []).forEach((task) => {
+      const row = element("article", `camo-task camo-task-${task.id}`);
 
-    const visual = element("div", `task-visual task-visual-${item.id}`);
-    visual.setAttribute("aria-hidden", "true");
-    visual.innerHTML = `
-      <div class="task-grid-lines"></div>
-      <div class="task-orbit orbit-one"></div>
-      <div class="task-orbit orbit-two"></div>
-      <div class="task-memory-path"><i></i><i></i><i></i><i></i></div>
-      <span class="task-visual-label">${item.index}</span>
-    `;
-    media.appendChild(visual);
-    return media;
-  }
-
-  function makeDemoSlide(item, index, total) {
-    const slide = element("article", "demo-slide");
-    slide.setAttribute("role", "group");
-    slide.setAttribute("aria-roledescription", "slide");
-    slide.setAttribute("aria-label", `${index + 1} of ${total}: ${item.title}`);
-    slide.appendChild(makeDemoMedia(item));
-
-    const copy = element("div", "demo-copy");
-    copy.appendChild(element("p", "section-kicker", item.eyebrow));
-    copy.appendChild(element("h3", "", item.title));
-    copy.appendChild(element("p", "demo-description", item.description));
-
-    if (item.hiddenVariable) {
-      const facts = element("dl", "demo-facts");
+      const info = element("div", "camo-task-info");
+      info.appendChild(element("h3", "", task.title));
+      info.appendChild(element("p", "camo-task-question", task.question));
+      const facts = element("dl", "camo-task-facts");
       [
-        ["Hidden variable", item.hiddenVariable],
-        ["Diagnostic", item.diagnostic],
-        ["Chance", item.chance]
+        ["Hidden variable", task.hiddenVariable],
+        ["Why it is ambiguous", task.aliasing],
+        ["Diagnoses", task.diagnostic]
       ].forEach(([term, value]) => {
-        facts.appendChild(element("dt", "", term));
-        facts.appendChild(element("dd", "", value));
+        const item = element("div");
+        item.append(element("dt", "", term), element("dd", "", value));
+        facts.appendChild(item);
       });
-      copy.appendChild(facts);
-    }
+      info.appendChild(facts);
+      const chance = element("p", "camo-task-chance");
+      chance.innerHTML = `Chance <strong>${task.chance}</strong>`;
+      info.appendChild(chance);
+      row.appendChild(info);
 
-    const tags = element("div", "demo-tags");
-    (item.tags || []).forEach((tag) => tags.appendChild(element("span", "", tag)));
-    copy.appendChild(tags);
-    slide.appendChild(copy);
-    return slide;
+      const strip = element("ol", "camo-strip");
+      task.frames.forEach((frame) => {
+        const item = element("li", frame.decision ? "camo-frame is-decision" : "camo-frame");
+        const img = element("img");
+        img.src = frame.img;
+        img.alt = `${task.title}: ${frame.caption}`;
+        img.loading = "lazy";
+        img.width = 720;
+        img.height = 441;
+        item.appendChild(img);
+        const label = element("p", "camo-frame-label", frame.label);
+        if (frame.decision) label.appendChild(element("sup", "", "*"));
+        item.appendChild(label);
+        item.appendChild(element("p", "camo-frame-caption", frame.caption));
+        strip.appendChild(item);
+      });
+      const stripWrap = element("div", "camo-strip-wrap");
+      stripWrap.appendChild(strip);
+      if (task.repeat) {
+        const repeat = element("p", "camo-repeat");
+        repeat.innerHTML = `<span aria-hidden="true">↻</span> ${task.repeat}`;
+        stripWrap.appendChild(repeat);
+      }
+      row.appendChild(stripWrap);
+      root.appendChild(row);
+    });
+
+    const note = element("p", "camo-note");
+    note.innerHTML = "<sup>*</sup> Non-Markovian stage: the current frame alone does not determine the correct action.";
+    root.appendChild(note);
   }
 
-  function renderDemoCarousel() {
-    const items = data.demos || [];
-    const track = byId("demo-track");
-    const dots = byId("demo-dots");
-    const prev = byId("demo-prev");
-    const next = byId("demo-next");
-    const toggle = byId("demo-toggle");
-    const viewport = document.querySelector(".demo-viewport");
-    if (!items.length || !track || !viewport) return;
+  const formatTime = (seconds) => {
+    const s = Math.max(0, Math.floor(seconds || 0));
+    return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
+  };
 
-    let index = 0;
-    let timer = null;
-    let playing = !reducedMotion;
-    let pointerStart = null;
+  function renderRealDemos() {
+    const root = byId("real-demos");
+    const groups = data.realDemos || [];
+    if (!root || !groups.length) return;
 
-    items.forEach((item, itemIndex) => {
-      track.appendChild(makeDemoSlide(item, itemIndex, items.length));
-      const dot = element("button", "demo-dot");
-      dot.type = "button";
-      dot.setAttribute("aria-label", `Show demo ${itemIndex + 1}: ${item.title}`);
-      dot.addEventListener("click", () => goTo(itemIndex, true));
-      dots.appendChild(dot);
-    });
+    const tabs = element("div", "real-tabs");
+    tabs.setAttribute("role", "tablist");
+    tabs.setAttribute("aria-label", "Camo-Dataset task");
+    root.appendChild(tabs);
 
-    const slides = [...track.children];
-    const dotButtons = [...dots.children];
-    byId("demo-total").textContent = String(items.length).padStart(2, "0");
+    const player = element("div", "real-player");
+    root.appendChild(player);
 
-    function updateMedia() {
-      slides.forEach((slide, slideIndex) => {
-        const video = slide.querySelector("video");
-        if (!video) return;
-        if (slideIndex === index && !reducedMotion) {
+    const stage = element("div", "real-stage");
+    const video = document.createElement("video");
+    video.muted = true;
+    video.playsInline = true;
+    video.preload = "metadata";
+    video.loop = true;
+    stage.appendChild(video);
+    const speedBadge = element("span", "real-speed");
+    stage.appendChild(speedBadge);
+    const missing = element("p", "real-missing", "Video coming soon");
+    stage.appendChild(missing);
+
+    const controls = element("div", "real-controls");
+    const playButton = element("button", "real-play");
+    playButton.type = "button";
+    const timeline = element("div", "real-timeline");
+    const clock = element("span", "real-clock", "0:00");
+    controls.append(playButton, timeline, clock);
+
+    const phaseName = element("p", "real-phase-name");
+
+    const main = element("div", "real-main");
+    main.append(stage, controls, phaseName);
+
+    const side = element("aside", "real-side");
+    player.append(main, side);
+
+    let group = null;
+    let episode = null;
+    let segmentNodes = [];
+    let starts = [];
+
+    function setPlaying(playing) {
+      playButton.textContent = playing ? "Pause" : "Play";
+      playButton.setAttribute("aria-label", playing ? "Pause video" : "Play video");
+    }
+
+    function phaseStarts() {
+      const duration = video.duration || 0;
+      if (episode.phases) return episode.phases;
+      return group.draftPhases.map((f) => f * duration);
+    }
+
+    function layoutTimeline() {
+      const duration = video.duration;
+      if (!duration || !isFinite(duration)) return;
+      starts = phaseStarts();
+      segmentNodes.forEach((node, i) => {
+        const end = i + 1 < starts.length ? starts[i + 1] : duration;
+        node.style.flexGrow = String(Math.max(0.001, end - starts[i]));
+      });
+      updateProgress();
+    }
+
+    function currentSegment(t) {
+      let index = 0;
+      starts.forEach((s, i) => {
+        if (t >= s) index = i;
+      });
+      return index;
+    }
+
+    function updateProgress() {
+      const duration = video.duration;
+      if (!duration || !isFinite(duration) || !starts.length) return;
+      const t = video.currentTime;
+      const active = currentSegment(t);
+      segmentNodes.forEach((node, i) => {
+        const end = i + 1 < starts.length ? starts[i + 1] : duration;
+        const fill = clamp((t - starts[i]) / Math.max(0.001, end - starts[i]), 0, 1);
+        node.style.setProperty("--fill", fill.toFixed(4));
+        node.classList.toggle("is-active", i === active);
+      });
+      const seg = group.segments[active];
+      phaseName.textContent = seg.label;
+      phaseName.classList.toggle("is-decision", Boolean(seg.decision));
+      clock.textContent = `${formatTime(t)} / ${formatTime(duration)}`;
+    }
+
+    function buildTimeline() {
+      timeline.textContent = "";
+      segmentNodes = group.segments.map((seg, i) => {
+        const node = element("button", seg.decision ? "real-seg is-decision" : "real-seg");
+        node.type = "button";
+        node.style.flexGrow = "1";
+        node.setAttribute("aria-label", `Jump to ${seg.label}`);
+        node.appendChild(element("span", "real-seg-bar"));
+        node.appendChild(element("span", "real-seg-label", seg.decision ? `${seg.short}*` : seg.short));
+        node.addEventListener("click", () => {
+          if (!starts.length) return;
+          video.currentTime = starts[i] + 0.05;
           video.play().catch(() => {});
-        } else {
-          video.pause();
-        }
+        });
+        timeline.appendChild(node);
+        return node;
       });
     }
 
-    function update() {
-      track.style.transform = `translate3d(-${index * 100}%, 0, 0)`;
-      byId("demo-current").textContent = String(index + 1).padStart(2, "0");
-      slides.forEach((slide, slideIndex) => {
-        slide.setAttribute("aria-hidden", String(slideIndex !== index));
+    function loadEpisode(next) {
+      episode = next;
+      starts = [];
+      stage.classList.remove("is-missing");
+      video.poster = episode.poster || "";
+      video.src = episode.src;
+      video.setAttribute("aria-label", `${group.title} rollout: ${episodeLabel(episode)}`);
+      speedBadge.textContent = episode.speed ? `${episode.speed} speed` : "";
+      buildTimeline();
+      renderSide();
+      if (!reducedMotion && inView) video.play().catch(() => {});
+    }
+
+    function episodeLabel(ep) {
+      if (ep.from) return `ball under the ${ep.from} cup, found under the ${ep.to} cup`;
+      return ep.z || ep.label;
+    }
+
+    function renderSide() {
+      side.textContent = "";
+      side.appendChild(element("p", "section-kicker", group.question));
+      side.appendChild(element("h4", "", group.title));
+
+      const picker = element("div", `real-picker real-picker-${group.picker}`);
+      picker.appendChild(element("p", "real-picker-label", group.pickerLabel));
+
+      if (group.picker === "matrix") {
+        const grid = element("div", "real-matrix");
+        grid.appendChild(element("span", "real-matrix-corner"));
+        group.positions.forEach((p) => grid.appendChild(element("span", "real-matrix-col", p)));
+        group.positions.forEach((from) => {
+          grid.appendChild(element("span", "real-matrix-row", from));
+          group.positions.forEach((to) => {
+            const ep = group.episodes.find((e) => e.from === from && e.to === to);
+            if (!ep) {
+              grid.appendChild(element("span", "real-matrix-empty"));
+              return;
+            }
+            grid.appendChild(episodeButton(ep, "real-matrix-cell", "●"));
+          });
+        });
+        picker.appendChild(grid);
+      } else {
+        const list = element("div", "real-list");
+        group.episodes.forEach((ep) => {
+          const button = episodeButton(ep, "real-chip", ep.label);
+          if (ep.swatch) {
+            const dot = element("i", "real-swatch");
+            dot.style.background = ep.swatch;
+            button.prepend(dot);
+          }
+          list.appendChild(button);
+        });
+        picker.appendChild(list);
+      }
+      side.appendChild(picker);
+
+      side.appendChild(element("p", "real-z", `This episode: ${episodeLabel(episode)}.`));
+
+      const scores = element("dl", "real-scores");
+      [
+        ["Chameleon", group.scores.dsr, group.scores.sr, true],
+        ["Diffusion Policy", group.scores.baselineDsr, group.scores.baselineSr, false]
+      ].forEach(([name, dsr, sr, ours]) => {
+        const item = element("div", ours ? "is-ours" : "");
+        item.appendChild(element("dt", "", name));
+        item.appendChild(element("dd", "", `DSR ${dsr.toFixed(1)} · SR ${sr.toFixed(1)}`));
+        scores.appendChild(item);
       });
-      dotButtons.forEach((dot, dotIndex) => {
-        const active = dotIndex === index;
-        dot.classList.toggle("is-active", active);
-        dot.setAttribute("aria-current", active ? "true" : "false");
+      side.appendChild(scores);
+    }
+
+    function episodeButton(ep, className, text) {
+      const button = element("button", className, text);
+      button.type = "button";
+      const current = ep === episode;
+      button.classList.toggle("is-active", current);
+      button.setAttribute("aria-pressed", String(current));
+      button.setAttribute("aria-label", episodeLabel(ep));
+      button.title = episodeLabel(ep);
+      button.addEventListener("click", () => {
+        if (ep !== episode) loadEpisode(ep);
       });
-      updateMedia();
+      return button;
     }
 
-    function schedule() {
-      window.clearInterval(timer);
-      if (!playing || items.length < 2) return;
-      timer = window.setInterval(() => goTo(index + 1, false), 7000);
+    const tabButtons = groups.map((g) => {
+      const tab = element("button", "real-tab");
+      tab.type = "button";
+      tab.setAttribute("role", "tab");
+      tab.appendChild(element("strong", "", g.title));
+      tab.appendChild(element("span", "", `${g.episodes.length} episode${g.episodes.length > 1 ? "s" : ""}`));
+      tab.addEventListener("click", () => selectGroup(g));
+      tabs.appendChild(tab);
+      return tab;
+    });
+
+    function selectGroup(g) {
+      group = g;
+      tabButtons.forEach((tab, i) => {
+        const on = groups[i] === g;
+        tab.classList.toggle("is-active", on);
+        tab.setAttribute("aria-selected", String(on));
+      });
+      loadEpisode(g.episodes[0]);
     }
 
-    function goTo(nextIndex, userInitiated) {
-      index = (nextIndex + items.length) % items.length;
-      update();
-      if (userInitiated) schedule();
-    }
-
-    function setPlaying(value) {
-      playing = value;
-      toggle.textContent = playing ? "Pause" : "Play";
-      toggle.setAttribute(
-        "aria-label",
-        playing ? "Pause automatic slide rotation" : "Play automatic slide rotation"
-      );
-      schedule();
-    }
-
-    prev.addEventListener("click", () => goTo(index - 1, true));
-    next.addEventListener("click", () => goTo(index + 1, true));
-    toggle.addEventListener("click", () => setPlaying(!playing));
-    viewport.addEventListener("mouseenter", () => window.clearInterval(timer));
-    viewport.addEventListener("mouseleave", schedule);
-    viewport.addEventListener("focusin", () => window.clearInterval(timer));
-    viewport.addEventListener("focusout", schedule);
-    viewport.addEventListener("keydown", (event) => {
-      if (event.key === "ArrowLeft") goTo(index - 1, true);
-      if (event.key === "ArrowRight") goTo(index + 1, true);
-    });
-    viewport.tabIndex = 0;
-
-    viewport.addEventListener("pointerdown", (event) => {
-      pointerStart = event.clientX;
-    });
-    viewport.addEventListener("pointerup", (event) => {
-      if (pointerStart === null) return;
-      const distance = event.clientX - pointerStart;
-      if (Math.abs(distance) > 45) goTo(index + (distance < 0 ? 1 : -1), true);
-      pointerStart = null;
-    });
-    viewport.addEventListener("pointercancel", () => {
-      pointerStart = null;
+    video.addEventListener("loadedmetadata", layoutTimeline);
+    video.addEventListener("timeupdate", updateProgress);
+    video.addEventListener("play", () => setPlaying(true));
+    video.addEventListener("pause", () => setPlaying(false));
+    video.addEventListener("error", () => stage.classList.add("is-missing"));
+    playButton.addEventListener("click", () => {
+      if (video.paused) video.play().catch(() => {});
+      else video.pause();
     });
 
-    setPlaying(playing);
-    update();
+    let inView = false;
+    new IntersectionObserver((entries) => {
+      inView = entries[0].isIntersecting;
+      if (inView && !reducedMotion) video.play().catch(() => {});
+      else video.pause();
+    }, { threshold: 0.35 }).observe(stage);
+
+    setPlaying(false);
+    selectGroup(groups[0]);
+  }
+
+  function renderSimDemos() {
+    const root = byId("sim-demos");
+    if (!root) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        const v = entry.target;
+        if (entry.isIntersecting && !reducedMotion) v.play().catch(() => {});
+        else v.pause();
+      });
+    }, { threshold: 0.4 });
+
+    (data.simBenchmarks || []).forEach((bench) => {
+      const block = element("article", `sim-bench sim-bench-${bench.id}`);
+      const head = element("header", "sim-head");
+      const title = element("div", "sim-title");
+      title.appendChild(element("h4", "", bench.name));
+      title.appendChild(element("p", "", `${bench.tests} · ${bench.protocol}`));
+      head.appendChild(title);
+      const score = element("p", "sim-score");
+      score.innerHTML = `${bench.value}<small>${bench.uncertainty}</small>`;
+      head.appendChild(score);
+      block.appendChild(head);
+
+      const grid = element("div", "sim-grid");
+      bench.tasks.forEach((task) => {
+        const tile = element("figure", "sim-tile");
+        const media = element("div", "sim-media");
+        const v = document.createElement("video");
+        v.src = task.src;
+        v.poster = task.poster;
+        v.muted = true;
+        v.loop = true;
+        v.playsInline = true;
+        v.preload = "none";
+        v.setAttribute("aria-label", `${bench.name}: ${task.name}`);
+        media.appendChild(v);
+        if (bench.speed) media.appendChild(element("span", "sim-speed", bench.speed));
+        tile.appendChild(media);
+        const caption = element("figcaption");
+        caption.appendChild(element("span", "sim-task", task.name));
+        if (task.success) caption.appendChild(element("span", "sim-success", `${task.success}%`));
+        tile.appendChild(caption);
+        grid.appendChild(tile);
+        observer.observe(v);
+      });
+      block.appendChild(grid);
+      root.appendChild(block);
+    });
+
+    const note = element("p", "sim-note", "Per-task success rates are from the paper (Table S7). LIBERO-10 is reported as an average only.");
+    root.appendChild(note);
+  }
+
+  function renderCamoTable() {
+    const table = byId("camo-table");
+    if (!table) return;
+    const rows = data.camoTable || [];
+    const fmt = (v) => v.toFixed(1);
+    table.innerHTML = `
+      <thead>
+        <tr>
+          <th scope="col">Method</th>
+          <th scope="col">Clean a specified plate</th>
+          <th scope="col">Play shell game</th>
+          <th scope="col">Add various seasonings</th>
+          <th scope="col">Avg. DSR</th>
+          <th scope="col">Avg. MSR</th>
+          <th scope="col">Avg. SR</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${rows
+          .map(
+            (r) => `<tr${r.ours ? ' class="is-ours"' : ""}>
+          <th scope="row">${r.method}</th>
+          <td>${fmt(r.plate[0])} / ${fmt(r.plate[1])}</td>
+          <td>${fmt(r.shell[0])} / ${fmt(r.shell[1])}</td>
+          <td>${fmt(r.seasonings[0])} / ${fmt(r.seasonings[1])}</td>
+          <td>${fmt(r.dsr)}</td>
+          <td>${fmt(r.msr)}</td>
+          <td>${fmt(r.sr)}</td>
+        </tr>`
+          )
+          .join("")}
+      </tbody>`;
   }
 
   function renderResults() {
@@ -300,8 +523,11 @@
     );
   }
 
-  renderDemoCarousel();
+  renderCamoTasks();
+  renderRealDemos();
+  renderSimDemos();
   renderResults();
+  renderCamoTable();
   renderEvidence();
   setupCitation();
   setupMethodWheel();

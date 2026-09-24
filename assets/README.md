@@ -11,15 +11,13 @@ Static media used by the Chameleon project page lives here.
 - `videos/supplementary-video-final.mp4` — hero and overview demo (web-optimized copy of the final supplementary video)
 - `videos/video1 - teaser.mp4` — previous teaser, retained as a legacy asset
 
-## Adding dataset demos
+## Demos
 
-1. Put the new videos under `assets/videos/` (or create `assets/demos/`).
-2. Open `config/site-data.js`.
-3. Find the matching item in `SITE_DATA.demos`.
-4. Set `mediaType` to `"video"` and set `src` to the local asset path.
-5. Optionally set a poster image with `poster`.
+- `demos/real/` — Camo-Dataset real-robot rollouts (720p, H.264, muted) with a poster `.jpg` each. Cut from the team's processed clips; the speed-up is labelled in `config/site-data.js`.
+- `demos/sim/{memorybench,libero-10,mikasa-robo}/` — one successful rollout per task, third-person half of the original side-by-side render, with posters.
+- `images/camo/` — frames cropped from paper Figure 3, used in the Camo-Dataset section.
 
-The circular carousel, controls, touch gestures, and video pause/play behavior are handled by `script.js`.
+To add or replace a rollout, drop the file in the matching folder and edit `realDemos` or `simBenchmarks` in `config/site-data.js`. Phase timings for a real-robot episode go in its `phases` array (start second of each timeline segment, in the web clip); without it the task's `draftPhases` fractions are used.
 
 ## Content sources
 
