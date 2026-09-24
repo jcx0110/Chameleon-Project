@@ -19,7 +19,7 @@
   function renderMethod() {
     const steps = data.methodSteps || [];
     const tabs = document.querySelector(".method-tabs");
-    const nodes = [...document.querySelectorAll("[data-method-node]")];
+    const panels = [...document.querySelectorAll("[data-method-panel]")];
     const label = byId("method-detail-label");
     const title = byId("method-detail-title");
     const description = byId("method-detail-description");
@@ -34,7 +34,7 @@
       button.type = "button";
       button.role = "tab";
       button.id = `method-tab-${step.id}`;
-      button.setAttribute("aria-controls", "method-detail-title");
+      button.setAttribute("aria-controls", `method-panel-${step.id}`);
       button.innerHTML = `<span>${step.number}</span><strong>${step.label}</strong>`;
       button.addEventListener("click", () => activate(index));
       button.addEventListener("keydown", (event) => {
@@ -62,8 +62,10 @@
         button.tabIndex = selected ? 0 : -1;
       });
 
-      nodes.forEach((node) => {
-        node.classList.toggle("is-active", node.dataset.methodNode === step.id);
+      panels.forEach((panel) => {
+        const selected = panel.dataset.methodPanel === step.id;
+        panel.classList.toggle("is-active", selected);
+        panel.hidden = !selected;
       });
 
       label.textContent = `${step.number} · ${step.label}`;
