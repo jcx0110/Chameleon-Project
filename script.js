@@ -316,22 +316,23 @@
   function setupCitation() {
     const box = byId("bibtex-box");
     const button = byId("copy-bibtex");
+    const buttonLabel = button.querySelector(".copy-label");
     box.textContent = data.bibtex || "";
 
     button.addEventListener("click", async () => {
       try {
         await navigator.clipboard.writeText(data.bibtex || "");
-        button.textContent = "Copied";
+        buttonLabel.textContent = "Copied";
       } catch (_error) {
         const selection = window.getSelection();
         const range = document.createRange();
         range.selectNodeContents(box);
         selection.removeAllRanges();
         selection.addRange(range);
-        button.textContent = "Selected";
+        buttonLabel.textContent = "Selected";
       }
       window.setTimeout(() => {
-        button.textContent = "Copy citation";
+        buttonLabel.textContent = "Copy BibTeX";
       }, 1600);
     });
   }

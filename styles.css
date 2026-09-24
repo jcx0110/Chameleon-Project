@@ -1698,36 +1698,73 @@ h2 {
 
 .bibtex-head {
   justify-content: space-between;
-  min-height: 56px;
-  padding: 0 20px;
-  border-bottom: 1px solid var(--line);
+  min-height: 64px;
+  padding: 0 24px;
+  border-bottom: 1px solid rgba(105, 54, 132, 0.12);
+}
+
+.bibtex-heading {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.bibtex-label {
+  color: var(--ink);
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.bibtex-meta {
+  color: var(--muted);
   font-size: 0.68rem;
 }
 
 .bibtex-head button {
-  padding: 7px 11px;
-  border-radius: 100px;
-  color: white;
-  background: var(--ui-blue);
-  font-size: 0.6rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 34px;
+  padding: 0 13px;
+  border: 1px solid rgba(52, 127, 175, 0.34);
+  border-radius: 9px;
+  color: var(--blue-deep);
+  background: white;
+  font-size: 0.68rem;
+  font-weight: 650;
   cursor: pointer;
-  transition: transform 150ms ease;
+  transition: color 150ms ease, background 150ms ease, border-color 150ms ease;
 }
 
 .bibtex-head button:hover {
-  transform: scale(1.05);
+  border-color: var(--ui-blue);
+  color: white;
+  background: var(--ui-blue);
+}
+
+.bibtex-head button:focus-visible {
+  outline: 3px solid rgba(52, 127, 175, 0.22);
+  outline-offset: 2px;
+}
+
+.copy-icon {
+  font-size: 0.95rem;
+  line-height: 1;
 }
 
 #bibtex-box {
   min-height: 300px;
   margin: 0;
-  padding: 36px;
+  padding: 30px 32px 34px;
   overflow-x: auto;
   color: var(--ink);
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: clamp(0.68rem, 1vw, 0.78rem);
-  line-height: 1.72;
+  font-size: clamp(0.72rem, 0.9vw, 0.82rem);
+  line-height: 1.8;
+  letter-spacing: -0.01em;
+  tab-size: 2;
   white-space: pre-wrap;
 }
 
