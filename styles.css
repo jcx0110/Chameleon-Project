@@ -239,31 +239,23 @@ h3 {
   max-width: 1180px;
 }
 
-.corl-mark {
+.hero-title-lockup {
+  position: relative;
+  display: inline-block;
+  margin: 0 auto 22px;
+}
+
+.hero-title-lockup h1 {
+  margin: 0;
+}
+
+.hero-title-lockup .eyebrow-row {
   position: absolute;
-  top: 26px;
-  left: calc((var(--shell) - 100vw) / 2 + 12px);
-  display: inline-flex;
-  align-items: baseline;
-  gap: 8px;
-  color: var(--violet-deep);
-}
-
-.corl-mark-word {
-  padding: 2px 8px 3px;
-  border: 1px solid rgba(82, 36, 127, 0.28);
-  border-radius: 5px;
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 1.05rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-}
-
-.corl-mark-year {
-  color: var(--muted);
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 0.66rem;
-  letter-spacing: 0.08em;
+  right: -12px;
+  bottom: -13px;
+  z-index: 1;
+  margin: 0;
+  justify-content: flex-end;
 }
 
 .eyebrow-row,
