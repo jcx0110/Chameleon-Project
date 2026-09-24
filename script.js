@@ -272,8 +272,37 @@
     });
   }
 
+  // Scrolling down steps through the pinned method walkthrough; scrolling up
+  // is usually a search for earlier content, so leave the walkthrough in one
+  // wheel tick instead of rewinding it step by step.
+  function setupMethodWheel() {
+    window.addEventListener(
+      "wheel",
+      (event) => {
+        if (event.deltaY >= 0 || event.ctrlKey || Math.abs(event.deltaX) > Math.abs(event.deltaY)) return;
+        const track = document.querySelector("#method .cmw-track");
+        const sticky = track && track.querySelector(".cmw-sticky");
+        if (!sticky) return;
+
+        const pinTop = parseFloat(getComputedStyle(sticky).top) || 0;
+        const rect = track.getBoundingClientRect();
+        const pinned = rect.top < pinTop - 1 && rect.bottom > window.innerHeight;
+        if (!pinned) return;
+
+        const unit = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? window.innerHeight : 1;
+        event.preventDefault();
+        window.scrollTo({
+          top: window.scrollY + rect.top - pinTop + event.deltaY * unit,
+          behavior: "instant"
+        });
+      },
+      { passive: false }
+    );
+  }
+
   renderDemoCarousel();
   renderResults();
   renderEvidence();
   setupCitation();
+  setupMethodWheel();
 })();
