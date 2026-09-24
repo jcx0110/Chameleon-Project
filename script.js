@@ -35,7 +35,7 @@
       button.role = "tab";
       button.id = `method-tab-${step.id}`;
       button.setAttribute("aria-controls", "method-detail-title");
-      button.innerHTML = `<span>${step.number}</span><strong>${step.action}</strong><small>${step.label}</small>`;
+      button.innerHTML = `<span>${step.number}</span><strong>${step.label}</strong>`;
       button.addEventListener("click", () => activate(index));
       button.addEventListener("keydown", (event) => {
         if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
@@ -62,9 +62,8 @@
         button.tabIndex = selected ? 0 : -1;
       });
 
-      nodes.forEach((node, nodeIndex) => {
+      nodes.forEach((node) => {
         node.classList.toggle("is-active", node.dataset.methodNode === step.id);
-        node.classList.toggle("is-complete", nodeIndex < index);
       });
 
       label.textContent = `${step.number} · ${step.label}`;

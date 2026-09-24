@@ -1,25 +1,23 @@
 window.SITE_DATA = {
   methodSteps: [
     {
-      id: "write",
+      id: "bind",
       number: "01",
-      action: "Write",
-      label: "Embodied event tokens",
-      title: "Bind what the robot sees, is, and intends.",
+      label: "Event Binding",
+      title: "Bind perception, body state, and task before memory propagation.",
       description:
-        "Each timestep is written as a set of localized event tokens rather than compressed into one global descriptor.",
+        "At each layer, the current embodied event tokens first interact through a residual self-attention mixer.",
       points: [
-        "Patch-level tokens preserve local visual evidence.",
-        "Proprioception anchors the event to the robot body.",
-        "Language specifies the task or supplies a learned null instruction."
+        "Visual, proprioceptive, and language tokens reinterpret one another.",
+        "The written event is already conditioned on the task and robot body.",
+        "This is the memory cell's write interface."
       ],
-      note: "Visual + proprioceptive + language evidence"
+      note: "Current embodied tokens → bound event evidence"
     },
     {
       id: "propagate",
       number: "02",
-      action: "Propagate",
-      label: "Token-grounded traces",
+      label: "Token-Grounded Trace Propagation",
       title: "Keep similar histories from collapsing together.",
       description:
         "A slow selective state-space stream propagates token-wise episode traces through causal time, preserving the distinctions that may matter later.",
@@ -31,34 +29,33 @@ window.SITE_DATA = {
       note: "Slow episode-level memory"
     },
     {
-      id: "address",
+      id: "recall",
       number: "03",
-      action: "Address",
-      label: "Control-indexed recall",
+      label: "Control-Indexed Recall",
       title: "Ask memory the current control question.",
       description:
-        "The present body, task, and scene form a learned control context that attends over the trace bank and recalls decision-relevant evidence.",
+        "A learned control index is refined by the current scene into a control context, which attends over the trace bank.",
       points: [
-        "Recall is conditioned on control relevance.",
+        "Proprioception and language initialize the control index.",
+        "Current event tokens refine it with present-scene evidence.",
         "The same trace bank can answer different decision states.",
-        "This realizes the addressability requirement."
+        "Recall is selected by control relevance rather than visual similarity."
       ],
       note: "Current control context → relevant trace"
     },
     {
       id: "consolidate",
       number: "04",
-      action: "Consolidate",
-      label: "Prospective working state",
-      title: "Turn remembered evidence into future action.",
+      label: "Working-State Consolidation",
+      title: "Fuse recalled evidence into the fast policy-facing state.",
       description:
-        "Recalled evidence is fused with the control context and updated through a fast stream to form the policy-facing working state.",
+        "The recalled trace and control context are fused, then propagated through a fast state-space stream for immediate action prediction.",
       points: [
-        "Control-JEPA predicts future control contexts during training.",
-        "A rectified-flow head generates the future action chunk.",
-        "This realizes the prospectiveness requirement."
+        "The slow stream preserves episode evidence.",
+        "The fast stream maintains the policy-facing working state.",
+        "The final working state feeds Control-JEPA and the action policy."
       ],
-      note: "Fast action-ready state → action horizon"
+      note: "Control context + recalled trace → working state"
     }
   ],
 

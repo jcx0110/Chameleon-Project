@@ -164,8 +164,8 @@
               <h2>Control-indexed<br />prospective memory</h2>
             </div>
             <p>
-              Chameleon runs a causal <strong>write–propagate–address–consolidate</strong> loop. Select a stage
-              to inspect how event evidence becomes a policy-facing working state.
+              Each memory layer repeats four causal operations. Select a stage to inspect how embodied event
+              evidence becomes a policy-facing working state.
             </p>
           </div>
 
@@ -173,39 +173,37 @@
             <div class="method-tabs" role="tablist" aria-label="Chameleon memory stages"></div>
 
             <div class="method-workbench">
-              <div class="method-diagram" aria-label="Interactive Chameleon method diagram">
-                <div class="signal-line" aria-hidden="true"></div>
-                <div class="method-node" data-method-node="write">
-                  <span class="node-glyph token-glyph" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
-                  <small>Embodied event</small>
-                  <strong>Tokens</strong>
+              <figure class="method-figure">
+                <div class="method-figure-scroll">
+                  <div class="method-figure-canvas">
+                    <img
+                      src="assets/images/chameleon-method.png"
+                      width="2280"
+                      height="1150"
+                      alt="Chameleon architecture across causal time and memory layers, including the control-indexed prospective memory cell, action policy, and training-only Control-JEPA branch."
+                    />
+                    <span class="method-focus method-focus-bind" data-method-node="bind" aria-hidden="true"></span>
+                    <span class="method-focus method-focus-propagate" data-method-node="propagate" aria-hidden="true"></span>
+                    <span class="method-focus method-focus-recall" data-method-node="recall" aria-hidden="true"></span>
+                    <span class="method-focus method-focus-consolidate" data-method-node="consolidate" aria-hidden="true"></span>
+                  </div>
                 </div>
-                <span class="method-arrow" aria-hidden="true">→</span>
-                <div class="method-node" data-method-node="propagate">
-                  <span class="node-glyph trace-glyph" aria-hidden="true"><i></i><i></i><i></i></span>
-                  <small>Episode-level</small>
-                  <strong>Traces</strong>
-                </div>
-                <span class="method-arrow" aria-hidden="true">→</span>
-                <div class="method-node" data-method-node="address">
-                  <span class="node-glyph query-glyph" aria-hidden="true"><i></i><b></b></span>
-                  <small>Control-indexed</small>
-                  <strong>Recall</strong>
-                </div>
-                <span class="method-arrow" aria-hidden="true">→</span>
-                <div class="method-node" data-method-node="consolidate">
-                  <span class="node-glyph state-glyph" aria-hidden="true"><i></i><b>→</b></span>
-                  <small>Prospective</small>
-                  <strong>State</strong>
-                </div>
-              </div>
+                <figcaption>
+                  <span>Method overview from the editable paper figure. Select a step above to locate it in the memory cell.</span>
+                  <a href="assets/images/chameleon-method.png" target="_blank" rel="noopener">Open full resolution <span aria-hidden="true">↗</span></a>
+                </figcaption>
+              </figure>
 
               <article class="method-detail" aria-live="polite">
-                <p class="detail-label" id="method-detail-label"></p>
-                <h3 id="method-detail-title"></h3>
-                <p id="method-detail-description"></p>
-                <ul id="method-detail-points"></ul>
-                <div class="method-note" id="method-detail-note"></div>
+                <div class="method-detail-heading">
+                  <p class="detail-label" id="method-detail-label"></p>
+                  <h3 id="method-detail-title"></h3>
+                </div>
+                <div class="method-detail-copy">
+                  <p id="method-detail-description"></p>
+                  <ul id="method-detail-points"></ul>
+                  <div class="method-note" id="method-detail-note"></div>
+                </div>
               </article>
             </div>
           </div>
