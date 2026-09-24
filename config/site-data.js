@@ -186,12 +186,12 @@ window.SITE_DATA = {
   ],
 
   bibtex: `@inproceedings{guo2026chameleon,
-  title     = {Chameleon: Control-Indexed Prospective Memory for Visuomotor Manipulation},
-  author    = {Guo, Xinying and Jiang, Chenxi and Kim, Hyun Bin
-               and Han, Yuhang and Sun, Ying and Xiao, Yang
-               and Yang, Jianfei},
-  booktitle = {Conference on Robot Learning (CoRL)},
-  year      = {2026},
-  url       = {https://openreview.net/forum?id=TTJ3uxLcxL}
+  title     = {{Chameleon}: Control-Indexed Prospective Memory for Visuomotor Manipulation},
+  author    = {Guo, Xinying and Jiang, Chenxi and Kim, Hyun Bin and Han, Yuhang
+               and Sun, Ying and Xiao, Yang and Yang, Jianfei},
+  booktitle = {Proceedings of The 10th Conference on Robot Learning},
+  series    = {Proceedings of Machine Learning Research},
+  publisher = {PMLR},
+  year      = {2026}
 }`
 };
