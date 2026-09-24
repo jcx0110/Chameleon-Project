@@ -281,26 +281,6 @@
             </div>
           </div>
 
-          <div class="method-outputs" aria-label="Outputs after the final memory layer">
-            <div class="final-state">
-              <span>Repeat across layers ℓ = 1 … L</span>
-              <strong>h<sub>t</sub> = h<sub>t</sub><sup>L</sup></strong>
-              <small>Final policy-facing working state</small>
-            </div>
-            <span class="output-split" aria-hidden="true"><i></i></span>
-            <div class="output-branches">
-              <article class="output-card action-output">
-                <p class="section-kicker">Sec. 3.4 · Inference</p>
-                <h3>Rectified-Flow Action Policy</h3>
-                <p>Generates the future continuous action chunk Â<sub>t:t+H−1</sub>.</p>
-              </article>
-              <article class="output-card jepa-output">
-                <p class="section-kicker">Sec. 3.3 · Training only</p>
-                <h3>Control-JEPA</h3>
-                <p>Predicts future control contexts; the EMA target branch is removed at inference.</p>
-              </article>
-            </div>
-          </div>
         </div>
       </section>
 
