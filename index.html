@@ -11,7 +11,9 @@
     <title>Chameleon · CoRL 2026</title>
     <link rel="icon" href="assets/favicon-chameleon.png?v=3" type="image/png" sizes="128x128" />
     <link rel="apple-touch-icon" href="assets/favicon-chameleon.png?v=3" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.18.9/dist/katex.min.css" />
     <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="method-walkthrough.css" />
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
@@ -146,140 +148,13 @@
               <h2>Control-indexed prospective memory</h2>
             </div>
             <p>
-              Each memory layer repeats four causal operations. Select a stage to inspect how embodied event
-              evidence becomes a policy-facing working state.
+              Chameleon keeps a memory that answers the question the robot is facing right now. Scroll through
+              the original method figure one operation at a time.
             </p>
           </div>
 
-          <div class="method-interactive">
-            <div class="method-tabs" role="tablist" aria-label="Chameleon memory stages"></div>
-
-            <div class="method-workbench">
-              <div class="method-stage">
-                <section class="method-panel is-active" id="method-panel-bind" data-method-panel="bind" role="tabpanel" aria-labelledby="method-tab-bind">
-                  <p class="method-panel-kicker">At time <em>t</em> · layer <em>ℓ</em></p>
-                  <div class="stage-flow stage-flow-bind" aria-label="Embodied event tokens pass through an event binding mixer to produce bound event evidence.">
-                    <div class="diagram-node token-node">
-                      <div class="token-grid" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-                      <div class="token-pair" aria-hidden="true"><span>p</span><span>q</span></div>
-                      <strong>Z<sub>t</sub><sup>ℓ</sup></strong>
-                      <small>Embodied event tokens</small>
-                    </div>
-                    <span class="diagram-arrow" aria-hidden="true"><i></i></span>
-                    <div class="diagram-node operator-node">
-                      <span class="operator-mark" aria-hidden="true">↻</span>
-                      <strong>Event Binding Mixer</strong>
-                      <small>Residual self-attention</small>
-                    </div>
-                    <span class="diagram-arrow" aria-hidden="true"><i></i></span>
-                    <div class="diagram-node token-node token-node-bound">
-                      <div class="token-grid token-grid-bound" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-                      <div class="token-pair" aria-hidden="true"><span>p̄</span><span>q̄</span></div>
-                      <strong>Z̄<sub>t</sub><sup>ℓ</sup></strong>
-                      <small>Bound event evidence</small>
-                    </div>
-                  </div>
-                </section>
-
-                <section class="method-panel" id="method-panel-propagate" data-method-panel="propagate" role="tabpanel" aria-labelledby="method-tab-propagate" hidden>
-                  <p class="method-panel-kicker">Slow episode-level timescale</p>
-                  <div class="stage-flow stage-flow-propagate" aria-label="Each bound token follows its own causal temporal stream through a shared slow state-space kernel, producing a bank of episodic traces.">
-                    <div class="diagram-node token-node token-node-compact">
-                      <div class="token-grid token-grid-bound" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-                      <strong>Z̄<sub>t</sub><sup>ℓ</sup></strong>
-                      <small>Bound tokens</small>
-                    </div>
-                    <span class="diagram-arrow" aria-hidden="true"><i></i></span>
-                    <div class="diagram-node temporal-node">
-                      <div class="trace-lanes" aria-hidden="true">
-                        <span><i></i><i></i><i></i><i></i></span>
-                        <span><i></i><i></i><i></i><i></i></span>
-                        <span><i></i><i></i><i></i><i></i></span>
-                      </div>
-                      <strong>SSM<sup>ℓ</sup><sub>slow</sub></strong>
-                      <small>Shared token-wise temporal kernel</small>
-                    </div>
-                    <span class="diagram-arrow" aria-hidden="true"><i></i></span>
-                    <div class="diagram-node trace-bank-node">
-                      <div class="trace-bank" aria-hidden="true">
-                        <span><i></i><i></i><i></i><i></i></span>
-                        <span><i></i><i></i><i></i><i></i></span>
-                        <span><i></i><i></i><i></i><i></i></span>
-                      </div>
-                      <strong>E<sub>t</sub><sup>ℓ</sup></strong>
-                      <small>Token-grounded episodic traces</small>
-                    </div>
-                  </div>
-                </section>
-
-                <section class="method-panel" id="method-panel-recall" data-method-panel="recall" role="tabpanel" aria-labelledby="method-tab-recall" hidden>
-                  <p class="method-panel-kicker">The current control question addresses memory</p>
-                  <div class="recall-map" aria-label="Proprioception and language form a control index, the current event refines it into a control context, and that context reads the relevant episodic trace.">
-                    <div class="recall-path control-path">
-                      <div class="diagram-node mini-input-node">
-                        <div class="token-pair"><span>p̄</span><span>q̄</span></div>
-                        <small>Body + task</small>
-                      </div>
-                      <span class="diagram-arrow" aria-hidden="true"><i></i></span>
-                      <div class="diagram-node function-node"><strong>f<sub>c</sub></strong><small>Control index</small></div>
-                      <span class="diagram-arrow" aria-hidden="true"><i></i></span>
-                      <div class="diagram-node attention-node"><strong>Control attention</strong><small>K,V = Z̄<sub>t</sub><sup>ℓ</sup></small></div>
-                      <span class="diagram-arrow" aria-hidden="true"><i></i></span>
-                      <div class="diagram-node context-node"><strong>u<sub>t</sub><sup>ℓ</sup></strong><small>Control context</small></div>
-                    </div>
-                    <div class="recall-path memory-path">
-                      <div class="diagram-node trace-bank-node trace-bank-node-small">
-                        <div class="trace-bank" aria-hidden="true">
-                          <span><i></i><i></i><i></i><i></i></span>
-                          <span><i></i><i></i><i></i><i></i></span>
-                        </div>
-                        <strong>E<sub>t</sub><sup>ℓ</sup></strong>
-                        <small>Trace bank</small>
-                      </div>
-                      <span class="diagram-arrow" aria-hidden="true"><i></i></span>
-                      <div class="diagram-node read-node"><strong>Read attention</strong><small>Q = u<sub>t</sub><sup>ℓ</sup></small></div>
-                      <span class="diagram-arrow" aria-hidden="true"><i></i></span>
-                      <div class="diagram-node recalled-node"><strong>r<sub>t</sub><sup>ℓ</sup></strong><small>Recalled trace</small></div>
-                    </div>
-                    <span class="query-link" aria-hidden="true">control query ↓</span>
-                  </div>
-                </section>
-
-                <section class="method-panel" id="method-panel-consolidate" data-method-panel="consolidate" role="tabpanel" aria-labelledby="method-tab-consolidate" hidden>
-                  <p class="method-panel-kicker">Fast policy-facing timescale</p>
-                  <div class="stage-flow stage-flow-consolidate" aria-label="Control context and recalled evidence are fused and update the fast working state.">
-                    <div class="diagram-node merge-node">
-                      <div class="merge-inputs"><span>u<sub>t</sub><sup>ℓ</sup></span><span>r<sub>t</sub><sup>ℓ</sup></span></div>
-                      <strong>f<sub>w</sub>([u, r])</strong>
-                      <small>Fuse context + recall</small>
-                    </div>
-                    <span class="diagram-arrow" aria-hidden="true"><i></i></span>
-                    <div class="diagram-node operator-node fast-node">
-                      <span class="previous-state">h<sub>t−1</sub><sup>ℓ</sup> ↘</span>
-                      <strong>SSM<sup>ℓ</sup><sub>fast</sub></strong>
-                      <small>Working-state update</small>
-                    </div>
-                    <span class="diagram-arrow" aria-hidden="true"><i></i></span>
-                    <div class="diagram-node working-state-node">
-                      <strong>h<sub>t</sub><sup>ℓ</sup></strong>
-                      <small>Policy-facing working state</small>
-                    </div>
-                  </div>
-                </section>
-              </div>
-
-              <article class="method-detail" aria-live="polite">
-                <div class="method-detail-heading">
-                  <p class="detail-label" id="method-detail-label"></p>
-                  <h3 id="method-detail-title"></h3>
-                </div>
-                <div class="method-detail-copy">
-                  <p id="method-detail-description"></p>
-                  <ul id="method-detail-points"></ul>
-                  <div class="method-note" id="method-detail-note"></div>
-                </div>
-              </article>
-            </div>
+          <div class="cmw" data-figure="assets/method/method-figure.svg">
+            <img src="assets/method/method-figure.svg" alt="Chameleon architecture overview" />
           </div>
 
         </div>
@@ -408,5 +283,6 @@
 
     <script src="config/site-data.js"></script>
     <script src="script.js"></script>
+    <script src="method-walkthrough.js"></script>
   </body>
 </html>

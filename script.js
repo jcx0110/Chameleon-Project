@@ -16,71 +16,6 @@
     return node;
   }
 
-  function renderMethod() {
-    const steps = data.methodSteps || [];
-    const tabs = document.querySelector(".method-tabs");
-    const panels = [...document.querySelectorAll("[data-method-panel]")];
-    const label = byId("method-detail-label");
-    const title = byId("method-detail-title");
-    const description = byId("method-detail-description");
-    const points = byId("method-detail-points");
-    const note = byId("method-detail-note");
-    let activeIndex = 0;
-
-    if (!tabs || !steps.length) return;
-
-    const buttons = steps.map((step, index) => {
-      const button = element("button", "method-tab");
-      button.type = "button";
-      button.role = "tab";
-      button.id = `method-tab-${step.id}`;
-      button.setAttribute("aria-controls", `method-panel-${step.id}`);
-      button.innerHTML = `<span>${step.number}</span><strong>${step.label}</strong>`;
-      button.addEventListener("click", () => activate(index));
-      button.addEventListener("keydown", (event) => {
-        if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
-        event.preventDefault();
-        let next = activeIndex;
-        if (event.key === "ArrowLeft") next = (activeIndex - 1 + steps.length) % steps.length;
-        if (event.key === "ArrowRight") next = (activeIndex + 1) % steps.length;
-        if (event.key === "Home") next = 0;
-        if (event.key === "End") next = steps.length - 1;
-        activate(next, true);
-      });
-      tabs.appendChild(button);
-      return button;
-    });
-
-    function activate(index, focus = false) {
-      activeIndex = index;
-      const step = steps[index];
-
-      buttons.forEach((button, buttonIndex) => {
-        const selected = buttonIndex === index;
-        button.classList.toggle("is-active", selected);
-        button.setAttribute("aria-selected", String(selected));
-        button.tabIndex = selected ? 0 : -1;
-      });
-
-      panels.forEach((panel) => {
-        const selected = panel.dataset.methodPanel === step.id;
-        panel.classList.toggle("is-active", selected);
-        panel.hidden = !selected;
-      });
-
-      label.textContent = `${step.number} · ${step.label}`;
-      title.textContent = step.title;
-      description.textContent = step.description;
-      points.replaceChildren(
-        ...(step.points || []).map((point) => element("li", "", point))
-      );
-      note.textContent = step.note;
-
-      if (focus) buttons[index].focus();
-    }
-
-    activate(0);
-  }
 
   function makeDemoMedia(item) {
     const media = element("div", "demo-media");
@@ -337,7 +272,6 @@
     });
   }
 
-  renderMethod();
   renderDemoCarousel();
   renderResults();
   renderEvidence();
