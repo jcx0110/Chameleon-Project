@@ -440,8 +440,8 @@ sup {
 
 .split-heading {
   display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(440px, 1.1fr);
-  gap: clamp(48px, 7vw, 120px);
+  grid-template-columns: minmax(0, 1.35fr) minmax(380px, 0.65fr);
+  gap: clamp(32px, 4vw, 64px);
   align-items: start;
 }
 
@@ -461,14 +461,12 @@ sup {
 
 h2 {
   margin: 0;
-  background: var(--ink-splatter) center / 100% 100% no-repeat, var(--gradient);
-  background-clip: text;
-  color: transparent;
-  font-size: clamp(2.4rem, 5.5vw, 4.8rem);
-  font-weight: 760;
-  letter-spacing: -0.04em;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: var(--ink);
+  font-size: clamp(1.7rem, 2.4vw, 2.35rem);
+  font-weight: 650;
+  letter-spacing: -0.025em;
+  line-height: 1.18;
+  white-space: nowrap;
 }
 
 .split-heading > p {
@@ -1752,10 +1750,6 @@ h2 {
   align-items: center;
 }
 
-.citation-copy h2 {
-  font-size: clamp(2.8rem, 5.6vw, 5rem);
-}
-
 .citation-copy > p:not(.section-kicker) {
   max-width: 470px;
   margin: 20px 0 30px;
@@ -1859,6 +1853,10 @@ h2 {
   .split-heading {
     grid-template-columns: 1fr;
     gap: 20px;
+  }
+
+  h2 {
+    white-space: normal;
   }
 }
 
@@ -1998,7 +1996,7 @@ h2 {
 
   h2 {
     overflow-wrap: break-word;
-    font-size: clamp(2.2rem, 11vw, 3.7rem);
+    font-size: clamp(1.65rem, 7vw, 2.15rem);
   }
 
   .split-heading > p {
