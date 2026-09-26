@@ -12,8 +12,8 @@
     <link rel="icon" href="assets/favicon-chameleon.png?v=3" type="image/png" sizes="128x128" />
     <link rel="apple-touch-icon" href="assets/favicon-chameleon.png?v=3" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.18.9/dist/katex.min.css" />
-    <link rel="stylesheet" href="styles.css?v=20260926g" />
-    <link rel="stylesheet" href="method-walkthrough.css?v=20260926g" />
+    <link rel="stylesheet" href="styles.css?v=20260926h" />
+    <link rel="stylesheet" href="method-walkthrough.css?v=20260926h" />
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
@@ -247,88 +247,36 @@
               <h2>Memory changes what the robot can do.</h2>
             </div>
             <p>
-              Three questions, in the order the paper asks them: is the failure really a memory failure, does
-              the remedy carry over to public benchmarks, and does each part of it pull its weight?
+              Camo-Dataset scores manipulation (MSR), the history-correct decision (DSR) and both together (SR)
+              separately, so memory errors show up apart from motor errors. The public benchmarks then test
+              whether the same design carries over.
             </p>
           </div>
 
-          <article class="exp-block">
-            <header class="exp-head">
-              <span class="exp-index" aria-hidden="true">01</span>
-              <p class="section-kicker">Diagnosis · Camo-Dataset</p>
-              <h3>Baselines can move. They cannot remember.</h3>
-              <p>
-                Every matched baseline completes a valid manipulation most of the time, yet picks the
-                history-correct target only about as often as chance. Chameleon closes that gap.
-              </p>
-            </header>
-            <div class="exp-body">
-              <figure class="exp-figure">
-                <figcaption class="exp-legend">
-                  <span><i class="key key-ring" aria-hidden="true"></i>MSR · manipulation</span>
-                  <span><i class="key key-dot" aria-hidden="true"></i>DSR · decision</span>
-                  <span><i class="key key-chance" aria-hidden="true"></i>Chance, averaged over tasks</span>
-                </figcaption>
-                <div id="exp-dumbbell" class="dumbbell" role="img"
-                  aria-label="Manipulation and decision success for each method; the full values are in the table below."></div>
-              </figure>
-
-              <div class="exp-subhead">
-                <h4>Per task</h4>
-                <div class="exp-toggle" role="group" aria-label="Metric">
-                  <button type="button" data-metric="0" aria-pressed="true">DSR</button>
-                  <button type="button" data-metric="1" aria-pressed="false">SR</button>
-                </div>
-              </div>
-              <div id="exp-tasks" class="task-multiples"></div>
+          <figure class="paper-table">
+            <figcaption>
+              <span class="paper-table-label">Table 1</span>
+              Real-robot results on Camo-Dataset. Task columns report DSR / SR (%); averages are task-wise.
+            </figcaption>
+            <div class="paper-table-scroll">
+              <table id="camo-table"></table>
             </div>
-          </article>
+          </figure>
 
-          <article class="exp-block">
-            <header class="exp-head">
-              <span class="exp-index" aria-hidden="true">02</span>
-              <p class="section-kicker">Generalization · public benchmarks</p>
-              <h3>The same design transfers.</h3>
-              <p>
-                Best reported result on MemoryBench and on both MIKASA-Robo settings. On LIBERO-10 it passes
-                π0 and 4D-VLA but trails MoDE and MemoryVLA; its remaining errors there are grasping and
-                placement, not recall.
-              </p>
-            </header>
-            <div class="exp-body">
-              <div id="exp-public" class="public-multiples"></div>
-              <p class="exp-note">
-                Success rate (%), each baseline as published under the same protocol. Chameleon shows mean ± s.d.
-                over seeds. <sup>*</sup>Reported under a modified protocol, so only partly comparable.
-              </p>
+          <figure class="paper-table">
+            <figcaption>
+              <span class="paper-table-label">Table 2</span>
+              Public long-horizon and memory benchmarks. Success rate (%), every entry under the protocol of its
+              cited source.
+            </figcaption>
+            <div class="paper-table-scroll">
+              <table id="public-table"></table>
             </div>
-          </article>
-
-          <article class="exp-block">
-            <header class="exp-head">
-              <span class="exp-index" aria-hidden="true">03</span>
-              <p class="section-kicker">Ablations · Camo-Dataset</p>
-              <h3>Remove any property and success falls.</h3>
-              <p>
-                Each variant takes away one of the three properties. Dropping the memory, its token-grounded
-                traces or its control index costs the most; dropping Control-JEPA keeps part of the decision
-                signal but still loses a quarter of end-to-end success.
-              </p>
-            </header>
-            <div class="exp-body">
-              <div id="exp-ablations" class="ablations"></div>
-              <p class="exp-note">Average end-to-end success (SR, %) over the three Camo-Dataset tasks.</p>
-            </div>
-          </article>
-
-          <details class="exp-table">
-            <summary>Show the full Camo-Dataset table</summary>
-            <div class="camo-table-scroll">
-              <table id="camo-table" class="camo-table"></table>
-            </div>
-          </details>
-
-          <div id="exp-tip" class="exp-tip" role="status" hidden></div>
+            <p class="paper-table-note">
+              <sup>*</sup>ReMem-VLA reports a modified MemoryBench protocol, so it is only partly comparable. The
+              2-task MIKASA-Robo row follows the specialist setting of DP-VPWEM.
+            </p>
+          </figure>
         </div>
       </section>
 
@@ -389,8 +337,8 @@
       <p>© 2026 MARS Lab · Nanyang Technological University</p>
     </footer>
 
-    <script src="config/site-data.js?v=20260926g"></script>
-    <script src="script.js?v=20260926g"></script>
-    <script src="method-walkthrough.js?v=20260926g"></script>
+    <script src="config/site-data.js?v=20260926h"></script>
+    <script src="script.js?v=20260926h"></script>
+    <script src="method-walkthrough.js?v=20260926h"></script>
   </body>
 </html>
