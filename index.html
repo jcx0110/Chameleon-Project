@@ -189,9 +189,18 @@
             the wrong target.
           </p>
           <dl>
-            <div><dt>MSR</dt><dd>Manipulation success. A valid manipulation, whichever target it picks.</dd></div>
-            <div><dt>DSR</dt><dd>Decision success. The history-correct target or subgoal, given a valid manipulation.</dd></div>
-            <div><dt>SR</dt><dd>End-to-end success. Both at once.</dd></div>
+            <div>
+              <dt>MSR <span class="camo-formula">= P(M)</span></dt>
+              <dd>Manipulation success. A valid manipulation, whichever target it picks.</dd>
+            </div>
+            <div>
+              <dt>DSR <span class="camo-formula">= P(D | M)</span></dt>
+              <dd>Decision success. The history-correct target or subgoal, given a valid manipulation.</dd>
+            </div>
+            <div>
+              <dt>SR <span class="camo-formula">= P(M ∩ D)</span></dt>
+              <dd>End-to-end success. Both at once.</dd>
+            </div>
           </dl>
         </div>
       </section>

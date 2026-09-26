@@ -22,10 +22,13 @@
     const root = byId("camo-tasks");
     if (!root) return;
 
-    (data.camoTasks || []).forEach((task) => {
+    (data.camoTasks || []).forEach((task, taskIndex) => {
       const row = element("article", `camo-task camo-task-${task.id}`);
 
       const info = element("div", "camo-task-info");
+      const index = element("span", "camo-index", String(taskIndex + 1).padStart(2, "0"));
+      index.setAttribute("aria-hidden", "true");
+      info.appendChild(index);
       info.appendChild(element("h3", "", task.title));
       info.appendChild(element("p", "camo-task-question", task.question));
       const facts = element("dl", "camo-task-facts");
