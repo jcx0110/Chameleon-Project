@@ -52,8 +52,7 @@ window.SITE_DATA = {
 
   // Real-robot rollouts, grouped by task and by the hidden value of each episode.
   // `phases` lists the start time (seconds, in the web clip) of each timeline segment.
-  // Episodes without `phases` fall back to the task's `draftPhases` fractions.
-  // TODO: replace the draft timings with the annotated ones.
+  // Episodes without `phases` fall back to the task's `draftPhases` fractions of the clip.
   realDemos: [
     {
       task: "plate",
@@ -64,15 +63,14 @@ window.SITE_DATA = {
       scores: { dsr: 91.2, sr: 86.1, baselineDsr: 33.3, baselineSr: 30.6 },
       segments: [
         { short: "Observe", label: "Observation & Memory" },
-        { short: "Observe", label: "Observation & Memory" },
-        { short: "Decide", label: "Decision", decision: true },
-        { short: "Act", label: "Manipulation" }
+        { short: "Act", label: "Manipulation" },
+        { short: "Decide", label: "Decision", decision: true }
       ],
-      draftPhases: [0, 0.07, 0.17, 0.4],
+      draftPhases: [0, 0.07, 0.68],
       episodes: [
-        { id: "plate-red", label: "Red", swatch: "#d9403a", z: "The red plate was used", src: "assets/demos/real/plate-red.mp4", poster: "assets/demos/real/plate-red.jpg", speed: "10×" },
-        { id: "plate-green", label: "Green", swatch: "#3f9a45", z: "The green plate was used", src: "assets/demos/real/plate-green.mp4", poster: "assets/demos/real/plate-green.jpg", speed: "10×" },
-        { id: "plate-white", label: "White", swatch: "#f4f1ec", z: "The white plate was used", src: "assets/demos/real/plate-white.mp4", poster: "assets/demos/real/plate-white.jpg", speed: "10×" }
+        { id: "plate-red", label: "Red", swatch: "#d9403a", z: "The red plate was used", src: "assets/demos/real/plate-red.mp4", poster: "assets/demos/real/plate-red.jpg", speed: "10×", phases: [0, 1, 11] },
+        { id: "plate-green", label: "Green", swatch: "#3f9a45", z: "The green plate was used", src: "assets/demos/real/plate-green.mp4", poster: "assets/demos/real/plate-green.jpg", speed: "10×", phases: [0, 2, 13] },
+        { id: "plate-white", label: "White", swatch: "#f4f1ec", z: "The white plate was used", src: "assets/demos/real/plate-white.mp4", poster: "assets/demos/real/plate-white.jpg", speed: "10×", phases: [0, 1, 10] }
       ]
     },
     {
