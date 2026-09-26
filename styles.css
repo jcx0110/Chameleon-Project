@@ -431,7 +431,6 @@ sup {
   border-radius: 22px;
   background: #f1edf1;
   box-shadow: 0 28px 64px rgba(82, 36, 127, 0.22), 0 0 0 1px rgba(105, 54, 132, 0.1);
-  cursor: pointer;
 }
 
 .media-frame figcaption {
@@ -456,26 +455,6 @@ sup {
   border-radius: 50%;
   background: var(--pink);
   box-shadow: 0 0 0 3px rgba(221, 86, 156, 0.17);
-}
-
-.hero-supp {
-  display: flex;
-  justify-content: flex-end;
-  gap: 8px;
-  margin-top: 40px;
-  color: var(--muted);
-  font-size: 0.76rem;
-  font-weight: 650;
-  transition: color 160ms ease;
-}
-
-.hero-supp span {
-  color: var(--pink);
-  font-size: 0.62rem;
-}
-
-.hero-supp:hover {
-  color: var(--pink);
 }
 
 .content-section {
@@ -2284,10 +2263,6 @@ h2 {
     max-width: calc(100% - 16px);
     padding: 5px 9px;
     font-size: 0.6rem;
-  }
-
-  .hero-supp {
-    margin-top: 28px;
   }
 
   .content-section {

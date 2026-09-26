@@ -18,29 +18,6 @@
   }
 
 
-  function setupHeroVideo() {
-    const video = byId("hero-video");
-    const label = byId("hero-video-label");
-    const cuts = data.heroMontage || [];
-    if (!video || !label || !cuts.length) return;
-
-    let current = -1;
-    const update = () => {
-      let index = 0;
-      cuts.forEach((cut, i) => {
-        if (video.currentTime >= cut.start) index = i;
-      });
-      if (index === current) return;
-      current = index;
-      const cut = cuts[index];
-      label.textContent = `${String(index + 1).padStart(2, "0")} · ${cut.label} · ${cut.speed}`;
-    };
-    video.addEventListener("timeupdate", update);
-    video.addEventListener("loadedmetadata", update);
-    video.addEventListener("click", () => (video.paused ? video.play().catch(() => {}) : video.pause()));
-    if (reducedMotion) video.pause();
-  }
-
   function renderCamoTasks() {
     const root = byId("camo-tasks");
     if (!root) return;
@@ -549,7 +526,6 @@
     );
   }
 
-  setupHeroVideo();
   renderCamoTasks();
   renderRealDemos();
   renderSimDemos();
