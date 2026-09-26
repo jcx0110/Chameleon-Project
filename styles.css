@@ -312,7 +312,8 @@ h3 {
 
 h1 {
   margin: 0 0 10px;
-  background: var(--skin) 0% 50% / 220% 100%;
+  /* Ink strokes at their natural proportions over a soft gradient. */
+  background: var(--ink-splatter) 30% 40% / 160% auto no-repeat, var(--skin) 0% 50% / 220% 100%;
   background-clip: text;
   color: transparent;
   font-size: clamp(4rem, 8.6vw, 7.5rem);
@@ -322,13 +323,13 @@ h1 {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   filter: drop-shadow(0 10px 24px rgba(122, 79, 207, 0.16));
-  animation: skin-shift 16s ease-in-out infinite alternate;
+  animation: skin-shift 18s ease-in-out infinite alternate;
 }
 
 /* The wordmark slowly shifts colour, the way a chameleon does. */
 @keyframes skin-shift {
   to {
-    background-position: 100% 50%;
+    background-position: 70% 60%, 100% 50%;
   }
 }
 
