@@ -312,8 +312,10 @@ h3 {
 
 h1 {
   margin: 0 0 10px;
-  /* Ink strokes at their natural proportions over a soft gradient. */
-  background: var(--ink-splatter) 30% 40% / 160% auto no-repeat, var(--skin) 0% 50% / 220% 100%;
+  /* Ink strokes over a soft gradient. The texture is sized in em at its own
+     10:3 ratio: it sets preserveAspectRatio="none", so "auto" lets Chrome
+     stretch it to the text box. */
+  background: var(--ink-splatter) 30% 40% / 10em 3em no-repeat, var(--skin) 0% 50% / 220% 100%;
   background-clip: text;
   color: transparent;
   font-size: clamp(4rem, 8.6vw, 7.5rem);
@@ -336,7 +338,8 @@ h1 {
 .hero-title {
   max-width: 1100px;
   margin: 24px auto 28px;
-  background: linear-gradient(100deg, #4a1f78 0%, #7a348f 45%, #a83e8e 62%, #33588f 100%);
+  background: var(--ink-splatter) 50% 45% / 20em 6em no-repeat,
+    linear-gradient(100deg, #4a1f78 0%, #7a348f 45%, #a83e8e 62%, #33588f 100%);
   background-clip: text;
   color: transparent;
   font-size: clamp(2rem, 4.25vw, 3.7rem);
