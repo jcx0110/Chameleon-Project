@@ -172,46 +172,90 @@ window.SITE_DATA = {
     }
   ],
 
-  // Paper Table 1, main comparison rows. Each task is [DSR, SR].
-  camoTable: [
-    { method: "Diffusion Policy", plate: [33.3, 30.6], shell: [34.3, 33.3], seasonings: [0.0, 0.0], dsr: 22.5, msr: 67.6, sr: 21.3 },
-    { method: "ACT", plate: [28.0, 19.4], shell: [35.5, 30.6], seasonings: [0.0, 0.0], dsr: 21.2, msr: 51.8, sr: 16.7 },
-    { method: "Flow Matching", plate: [30.0, 25.0], shell: [25.7, 25.0], seasonings: [0.0, 0.0], dsr: 18.6, msr: 62.0, sr: 16.7 },
-    { method: "Chameleon", ours: true, plate: [91.2, 86.1], shell: [86.1, 86.1], seasonings: [65.2, 41.7], dsr: 80.8, msr: 86.1, sr: 71.3 }
-  ],
-
-  benchmarkHighlights: [
-    {
-      benchmark: "MemoryBench",
-      value: "97.3",
-      uncertainty: "± 4.5%",
-      protocol: "3 task-specific policies"
-    },
-    {
-      benchmark: "LIBERO-10",
-      value: "87.1",
-      uncertainty: "± 0.8%",
-      protocol: "10-task mixed policy"
-    },
-    {
-      benchmark: "MIKASA-Robo",
-      value: "75.1",
-      uncertainty: "± 1.4%",
-      protocol: "5-task mixed policy"
-    },
-    {
-      benchmark: "MIKASA-Robo",
-      value: "95.6",
-      uncertainty: "± 1.0%",
-      protocol: "2 task-specific policies"
-    }
-  ],
-
-  camoResults: [
-    { metric: "DSR", label: "Decision success", baseline: 22.5, ours: 80.8 },
-    { metric: "MSR", label: "Manipulation success", baseline: 67.6, ours: 86.1 },
-    { metric: "SR", label: "End-to-end success", baseline: 21.3, ours: 71.3 }
-  ],
+  // Experiments section. Every number is from the paper: Table 1 (Camo-Dataset and
+  // ablations), Table 2 (public benchmarks) and Table S3 (chance rates).
+  experiments: {
+    camoTasks: [
+      { key: "plate", name: "Clean a specified plate", chance: 100 / 3, chanceLabel: "1/3" },
+      { key: "shell", name: "Play shell game", chance: 100 / 3, chanceLabel: "1/3" },
+      { key: "seasonings", name: "Add various seasonings", chance: 100 / 27, chanceLabel: "1/27" }
+    ],
+    // Each task is [DSR, SR]; msr / dsr / sr are task-wise averages.
+    camoMethods: [
+      { method: "Diffusion Policy", plate: [33.3, 30.6], shell: [34.3, 33.3], seasonings: [0.0, 0.0], msr: 67.6, dsr: 22.5, sr: 21.3 },
+      { method: "ACT", plate: [28.0, 19.4], shell: [35.5, 30.6], seasonings: [0.0, 0.0], msr: 51.8, dsr: 21.2, sr: 16.7 },
+      { method: "Flow Matching", plate: [30.0, 25.0], shell: [25.7, 25.0], seasonings: [0.0, 0.0], msr: 62.0, dsr: 18.6, sr: 16.7 },
+      { method: "Chameleon", ours: true, plate: [91.2, 86.1], shell: [86.1, 86.1], seasonings: [65.2, 41.7], msr: 86.1, dsr: 80.8, sr: 71.3 }
+    ],
+    // Mechanism ablations on Camo-Dataset (Table 1, lower block), with the property each variant removes.
+    ablations: [
+      { method: "Chameleon (full)", ours: true, plate: [91.2, 86.1], shell: [86.1, 86.1], seasonings: [65.2, 41.7], dsr: 80.8, msr: 86.1, sr: 71.3 },
+      { method: "w/o Control-JEPA", property: "Prospectiveness", plate: [82.8, 66.7], shell: [71.0, 61.1], seasonings: [61.1, 30.6], dsr: 71.6, msr: 72.2, sr: 52.8 },
+      { method: "w/o control index", property: "Addressability", plate: [40.7, 30.6], shell: [45.8, 30.6], seasonings: [60.0, 16.7], dsr: 48.8, msr: 56.5, sr: 26.0 },
+      { method: "Vanilla Mamba memory", property: "Separability", plate: [27.6, 22.2], shell: [30.0, 25.0], seasonings: [50.0, 19.4], dsr: 35.9, msr: 67.6, sr: 22.2 },
+      { method: "Similarity retrieval bank", property: "Addressability", plate: [41.4, 33.3], shell: [28.6, 22.2], seasonings: [0.0, 0.0], dsr: 23.3, msr: 58.3, sr: 18.5 },
+      { method: "w/o memory", property: "Separability", plate: [26.7, 22.2], shell: [34.4, 30.6], seasonings: [0.0, 0.0], dsr: 20.4, msr: 64.8, sr: 17.6 }
+    ],
+    // Public benchmarks, success rate (%). Baselines as published under the same protocol.
+    publicBenchmarks: [
+      {
+        name: "MemoryBench",
+        tests: "Spatial memory",
+        protocol: "3 task-specific policies",
+        ours: { value: 97.3, sd: 4.5 },
+        baselines: [
+          { method: "ReMem-VLA", value: 94.5, note: "modified protocol" },
+          { method: "SAM2Act+", value: 94.3 },
+          { method: "SAM2Act", value: 55.0 },
+          { method: "RVT-2", value: 54.0 }
+        ]
+      },
+      {
+        name: "MIKASA-Robo",
+        tests: "Non-Markovian tasks",
+        protocol: "5-task mixed policy",
+        ours: { value: 75.1, sd: 1.4 },
+        baselines: [
+          { method: "GMP", value: 67.8 },
+          { method: "MemoryVLA", value: 41.2 },
+          { method: "π0", value: 29.4 },
+          { method: "OpenVLA-OFT", value: 28.4 },
+          { method: "SpatialVLA", value: 21.0 },
+          { method: "CronusVLA", value: 18.0 }
+        ]
+      },
+      {
+        name: "MIKASA-Robo",
+        tests: "Non-Markovian tasks",
+        protocol: "2 task-specific policies",
+        ours: { value: 95.6, sd: 1.0 },
+        baselines: [
+          { method: "DP-VPWEM", value: 86.5 },
+          { method: "DP", value: 19.5 },
+          { method: "MaIL", value: 19.5 },
+          { method: "DP-PTP", value: 15.0 }
+        ]
+      },
+      {
+        name: "LIBERO-10",
+        tests: "Long-horizon, language-conditioned",
+        protocol: "10-task mixed policy",
+        ours: { value: 87.1, sd: 0.8 },
+        baselines: [
+          { method: "MemoryVLA", value: 93.4 },
+          { method: "MoDE", value: 92.0 },
+          { method: "4D-VLA", value: 86.5 },
+          { method: "π0", value: 85.2 },
+          { method: "TriVLA", value: 73.2 },
+          { method: "DP-CNN", value: 73.0 },
+          { method: "QueST", value: 69.0 },
+          { method: "CoT-VLA", value: 69.0 },
+          { method: "OpenVLA", value: 53.7 },
+          { method: "DP-T", value: 51.0 }
+        ]
+      }
+    ]
+  },
 
   evidence: [
     {

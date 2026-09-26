@@ -377,77 +377,269 @@
     root.appendChild(note);
   }
 
-  function renderCamoTable() {
-    const table = byId("camo-table");
-    if (!table) return;
-    const rows = data.camoTable || [];
-    const fmt = (v) => v.toFixed(1);
-    table.innerHTML = `
-      <thead>
-        <tr>
-          <th scope="col">Method</th>
-          <th scope="col">Clean a specified plate</th>
-          <th scope="col">Play shell game</th>
-          <th scope="col">Add various seasonings</th>
-          <th scope="col">Avg. DSR</th>
-          <th scope="col">Avg. MSR</th>
-          <th scope="col">Avg. SR</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${rows
-          .map(
-            (r) => `<tr${r.ours ? ' class="is-ours"' : ""}>
-          <th scope="row">${r.method}</th>
-          <td>${fmt(r.plate[0])} / ${fmt(r.plate[1])}</td>
-          <td>${fmt(r.shell[0])} / ${fmt(r.shell[1])}</td>
-          <td>${fmt(r.seasonings[0])} / ${fmt(r.seasonings[1])}</td>
-          <td>${fmt(r.dsr)}</td>
-          <td>${fmt(r.msr)}</td>
-          <td>${fmt(r.sr)}</td>
-        </tr>`
-          )
-          .join("")}
-      </tbody>`;
+  // ---------- Experiments ----------
+
+  const pct = (v) => `${v.toFixed(1)}%`;
+
+  // One shared tooltip. Values lead, labels follow; every value is also on the page or in the table.
+  function makeTooltip() {
+    const tip = byId("exp-tip");
+    if (!tip) return () => {};
+    const show = (node, x, y) => {
+      tip.textContent = "";
+      (node._tip || []).forEach(([value, label], i) => {
+        const row = element("div", i ? "exp-tip-row" : "exp-tip-row is-lead");
+        row.append(element("strong", "", value), element("span", "", label));
+        tip.appendChild(row);
+      });
+      tip.hidden = false;
+      const r = tip.getBoundingClientRect();
+      const left = clamp(x + 14, 8, window.innerWidth - r.width - 8);
+      const top = y - r.height - 12 < 8 ? y + 16 : y - r.height - 12;
+      tip.style.transform = `translate(${left}px, ${top}px)`;
+    };
+    const hide = () => {
+      tip.hidden = true;
+    };
+    return (node, lines) => {
+      node._tip = lines;
+      node.tabIndex = 0;
+      node.addEventListener("pointermove", (e) => show(node, e.clientX, e.clientY));
+      node.addEventListener("pointerleave", hide);
+      node.addEventListener("focus", () => {
+        const r = node.getBoundingClientRect();
+        show(node, r.left + r.width / 2, r.top);
+      });
+      node.addEventListener("blur", hide);
+    };
   }
 
-  function renderResults() {
-    const highlights = byId("result-highlights");
-    const bars = byId("result-bars");
-
-    (data.benchmarkHighlights || []).forEach((result) => {
-      const card = element("article", "result-card");
-      const value = element("p", "result-value");
-      value.innerHTML = `${result.value}<small>${result.uncertainty}</small>`;
-      card.appendChild(element("p", "result-benchmark", result.benchmark));
-      card.appendChild(value);
-      card.appendChild(element("p", "result-protocol", result.protocol));
-      highlights.appendChild(card);
+  function axisRow(className) {
+    const axis = element("div", className);
+    [0, 25, 50, 75, 100].forEach((v) => {
+      const tick = element("span", "", String(v));
+      tick.style.left = `${v}%`;
+      axis.appendChild(tick);
     });
+    return axis;
+  }
 
-    (data.camoResults || []).forEach((result) => {
-      const row = element("div", "bar-group");
-      const heading = element("div", "bar-heading");
-      heading.innerHTML = `<strong>${result.metric}</strong><span>${result.label}</span>`;
-      row.appendChild(heading);
+  function renderDumbbell(exp, tipFor) {
+    const root = byId("exp-dumbbell");
+    if (!root) return;
+    const chance = exp.camoTasks.reduce((s, t) => s + t.chance, 0) / exp.camoTasks.length;
 
+    exp.camoMethods.forEach((m) => {
+      const row = element("div", m.ours ? "db-row is-ours" : "db-row");
+      row.appendChild(element("span", "db-name", m.method));
+
+      const track = element("div", "db-track");
+      const line = element("i", "db-chance");
+      line.style.left = `${chance}%`;
+      track.appendChild(line);
+      const lo = Math.min(m.msr, m.dsr);
+      const hi = Math.max(m.msr, m.dsr);
+      const link = element("i", "db-link");
+      link.style.left = `${lo}%`;
+      link.style.width = `${hi - lo}%`;
+      track.appendChild(link);
       [
-        ["baseline", result.baseline],
-        ["ours", result.ours]
-      ].forEach(([kind, value]) => {
-        const line = element("div", `bar-line bar-${kind}`);
-        const label = element("span", "bar-name", kind === "ours" ? "Chameleon" : "Diffusion Policy");
-        const meter = element("div", "bar-meter");
-        const fill = element("i", "bar-fill");
-        fill.style.setProperty("--bar-value", `${value}%`);
-        meter.appendChild(fill);
-        const number = element("strong", "bar-value", `${value}%`);
-        line.append(label, meter, number);
-        row.appendChild(line);
+        ["db-ring", m.msr, "MSR · manipulation success"],
+        ["db-dot", m.dsr, "DSR · decision success"]
+      ].forEach(([cls, v, label]) => {
+        const mark = element("span", `db-mark ${cls}`);
+        mark.style.left = `${v}%`;
+        tipFor(mark, [[pct(v), `${m.method} · ${label}`]]);
+        track.appendChild(mark);
       });
+      row.appendChild(track);
 
-      bars.appendChild(row);
+      const values = element("span", "db-values");
+      values.append(element("b", "", m.msr.toFixed(1)), element("span", "", " → "), element("b", "", m.dsr.toFixed(1)));
+      row.appendChild(values);
+      root.appendChild(row);
     });
+
+    const foot = element("div", "db-row db-axis-row");
+    foot.appendChild(element("span", "db-name"));
+    const axis = axisRow("db-axis");
+    const chanceLabel = element("em", "db-chance-label", `chance ${chance.toFixed(1)}`);
+    chanceLabel.style.left = `${chance}%`;
+    axis.appendChild(chanceLabel);
+    foot.appendChild(axis);
+    foot.appendChild(element("span", "db-values db-values-head", "MSR → DSR"));
+    root.appendChild(foot);
+  }
+
+  // Horizontal bar list: one row per item, value at the tip, optional reference line.
+  function barList(items, { tipFor, reference, referenceLabel }) {
+    const list = element("div", "bar-list");
+    if (reference != null) {
+      const ref = element("i", "bl-ref");
+      ref.style.setProperty("--x", String(reference));
+      list.appendChild(ref);
+      if (referenceLabel) {
+        const label = element("em", "bl-ref-label", referenceLabel);
+        label.style.setProperty("--x", String(reference));
+        list.appendChild(label);
+      }
+    }
+    items.forEach((item) => {
+      const row = element("div", item.ours ? "bl-row is-ours" : "bl-row");
+      const name = element("span", "bl-name", item.label);
+      if (item.chip) {
+        const chip = element("span", `bl-chip chip-${item.chip.toLowerCase()}`, item.chip);
+        name.appendChild(chip);
+      }
+      row.appendChild(name);
+      const track = element("div", "bl-track");
+      const bar = element("i", "bl-bar");
+      bar.style.width = `${item.value}%`;
+      track.appendChild(bar);
+      tipFor(track, item.tip);
+      row.appendChild(track);
+      const value = element("span", "bl-value", item.text || item.value.toFixed(1));
+      if (item.drop) value.appendChild(element("span", "bl-drop", item.drop));
+      row.appendChild(value);
+      list.appendChild(row);
+    });
+    return list;
+  }
+
+  function renderTaskMultiples(exp, tipFor) {
+    const root = byId("exp-tasks");
+    if (!root) return;
+    const toggle = [...document.querySelectorAll(".exp-toggle button")];
+    const metrics = ["DSR", "SR"];
+
+    const draw = (k) => {
+      root.textContent = "";
+      exp.camoTasks.forEach((task) => {
+        const panel = element("section", "tm-panel");
+        const head = element("header", "tm-head");
+        head.appendChild(element("h5", "", task.name));
+        panel.appendChild(head);
+        const items = exp.camoMethods.map((m) => ({
+          label: m.method,
+          ours: m.ours,
+          value: m[task.key][k],
+          tip: [
+            [pct(m[task.key][k]), `${m.method} · ${metrics[k]}`],
+            [`${m[task.key][0].toFixed(1)} / ${m[task.key][1].toFixed(1)}`, "DSR / SR"]
+          ]
+        }));
+        // Chance applies to the decision alone, so it is drawn for DSR only.
+        const ref = k === 0 ? task.chance : null;
+        panel.appendChild(barList(items, { tipFor, reference: ref, referenceLabel: ref != null ? `chance ${task.chanceLabel}` : null }));
+        root.appendChild(panel);
+      });
+    };
+
+    toggle.forEach((button) => {
+      button.addEventListener("click", () => {
+        toggle.forEach((b) => b.setAttribute("aria-pressed", String(b === button)));
+        draw(Number(button.dataset.metric));
+      });
+    });
+    draw(0);
+  }
+
+  function renderPublic(exp, tipFor) {
+    const root = byId("exp-public");
+    if (!root) return;
+    exp.publicBenchmarks.forEach((bench) => {
+      const panel = element("section", "pm-panel");
+      const head = element("header", "pm-head");
+      head.appendChild(element("h5", "", bench.name));
+      head.appendChild(element("p", "", `${bench.tests} · ${bench.protocol}`));
+      panel.appendChild(head);
+
+      const rows = [
+        {
+          label: "Chameleon",
+          ours: true,
+          value: bench.ours.value,
+          text: `${bench.ours.value.toFixed(1)} ± ${bench.ours.sd.toFixed(1)}`,
+          tip: [[`${bench.ours.value.toFixed(1)} ± ${bench.ours.sd.toFixed(1)}%`, `Chameleon · ${bench.protocol}`]]
+        },
+        ...bench.baselines.map((b) => ({
+          label: b.note ? `${b.method}*` : b.method,
+          value: b.value,
+          tip: [[pct(b.value), b.note ? `${b.method} · ${b.note}` : b.method]]
+        }))
+      ].sort((a, b) => b.value - a.value);
+      panel.appendChild(barList(rows, { tipFor }));
+      root.appendChild(panel);
+    });
+  }
+
+  function renderAblations(exp, tipFor) {
+    const root = byId("exp-ablations");
+    if (!root) return;
+    const full = exp.ablations.find((a) => a.ours);
+    const items = exp.ablations.map((a) => {
+      return {
+        label: a.method,
+        chip: a.property,
+        ours: a.ours,
+        value: a.sr,
+        drop: a.ours ? "" : `−${(full.sr - a.sr).toFixed(1)}`,
+        tip: [
+          [pct(a.sr), `${a.method} · SR`],
+          [`${a.dsr.toFixed(1)} / ${a.msr.toFixed(1)}`, "DSR / MSR"],
+          ...(a.property ? [[a.property, "property removed"]] : [])
+        ]
+      };
+    });
+    root.appendChild(barList(items, { tipFor }));
+  }
+
+  function renderCamoTable(exp) {
+    const table = byId("camo-table");
+    if (!table) return;
+    const fmt = (v) => v.toFixed(1);
+    const head = element("thead");
+    const hr = element("tr");
+    ["Method", ...exp.camoTasks.map((t) => `${t.name} (DSR / SR)`), "Avg. DSR", "Avg. MSR", "Avg. SR"].forEach((label) => {
+      const th = element("th", "", label);
+      th.scope = "col";
+      hr.appendChild(th);
+    });
+    head.appendChild(hr);
+    table.appendChild(head);
+
+    const group = (title, rows) => {
+      const body = element("tbody");
+      const gr = element("tr", "is-group");
+      const gh = element("th", "", title);
+      gh.colSpan = 7;
+      gh.scope = "colgroup";
+      gr.appendChild(gh);
+      body.appendChild(gr);
+      rows.forEach((r) => {
+        const tr = element("tr", r.ours ? "is-ours" : "");
+        const th = element("th", "", r.method);
+        th.scope = "row";
+        tr.appendChild(th);
+        exp.camoTasks.forEach((t) => tr.appendChild(element("td", "", `${fmt(r[t.key][0])} / ${fmt(r[t.key][1])}`)));
+        [r.dsr, r.msr, r.sr].forEach((v) => tr.appendChild(element("td", "", fmt(v))));
+        body.appendChild(tr);
+      });
+      table.appendChild(body);
+    };
+    group("Matched imitation baselines", exp.camoMethods.filter((m) => !m.ours));
+    group("Chameleon and mechanism ablations", exp.ablations);
+  }
+
+  function renderExperiments() {
+    const exp = data.experiments;
+    if (!exp) return;
+    const tipFor = makeTooltip();
+    renderDumbbell(exp, tipFor);
+    renderTaskMultiples(exp, tipFor);
+    renderPublic(exp, tipFor);
+    renderAblations(exp, tipFor);
+    renderCamoTable(exp);
   }
 
   function renderEvidence() {
@@ -529,8 +721,7 @@
   renderCamoTasks();
   renderRealDemos();
   renderSimDemos();
-  renderResults();
-  renderCamoTable();
+  renderExperiments();
   renderEvidence();
   setupCitation();
   setupMethodWheel();

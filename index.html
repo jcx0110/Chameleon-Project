@@ -12,8 +12,8 @@
     <link rel="icon" href="assets/favicon-chameleon.png?v=3" type="image/png" sizes="128x128" />
     <link rel="apple-touch-icon" href="assets/favicon-chameleon.png?v=3" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.18.9/dist/katex.min.css" />
-    <link rel="stylesheet" href="styles.css?v=20260926f" />
-    <link rel="stylesheet" href="method-walkthrough.css?v=20260926f" />
+    <link rel="stylesheet" href="styles.css?v=20260926g" />
+    <link rel="stylesheet" href="method-walkthrough.css?v=20260926g" />
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
@@ -35,7 +35,7 @@
         <a href="#method">Method</a>
         <a href="#dataset">Camo-Dataset</a>
         <a href="#results">Results</a>
-        <a href="#evaluation">Evaluation</a>
+        <a href="#experiments">Experiments</a>
         <a href="#evidence">Evidence</a>
       </nav>
       <a class="nav-paper" href="assets/papers/2603.24576v2.pdf">Paper <span aria-hidden="true">↗</span></a>
@@ -239,43 +239,96 @@
           </div>
         </div>
       </section>
-      <section class="content-section evaluation-section" id="evaluation">
+      <section class="content-section experiments-section" id="experiments">
         <div class="section-shell">
           <div class="section-heading split-heading">
             <div>
-              <p class="section-kicker">Evaluation</p>
+              <p class="section-kicker">Experiments</p>
               <h2>Memory changes what the robot can do.</h2>
             </div>
             <p>
-              Camo-Dataset reports manipulation success (MSR), history-correct decision success (DSR), and
-              end-to-end success (SR) separately. Chameleon improves the decision—not only the motion.
+              Three questions, in the order the paper asks them: is the failure really a memory failure, does
+              the remedy carry over to public benchmarks, and does each part of it pull its weight?
             </p>
           </div>
 
-          <div id="result-highlights" class="result-highlights"></div>
+          <article class="exp-block">
+            <header class="exp-head">
+              <span class="exp-index" aria-hidden="true">01</span>
+              <p class="section-kicker">Diagnosis · Camo-Dataset</p>
+              <h3>Baselines can move. They cannot remember.</h3>
+              <p>
+                Every matched baseline completes a valid manipulation most of the time, yet picks the
+                history-correct target only about as often as chance. Chameleon closes that gap.
+              </p>
+            </header>
+            <div class="exp-body">
+              <figure class="exp-figure">
+                <figcaption class="exp-legend">
+                  <span><i class="key key-ring" aria-hidden="true"></i>MSR · manipulation</span>
+                  <span><i class="key key-dot" aria-hidden="true"></i>DSR · decision</span>
+                  <span><i class="key key-chance" aria-hidden="true"></i>Chance, averaged over tasks</span>
+                </figcaption>
+                <div id="exp-dumbbell" class="dumbbell" role="img"
+                  aria-label="Manipulation and decision success for each method; the full values are in the table below."></div>
+              </figure>
 
-          <div class="results-panel">
-            <div class="results-copy">
-              <p class="section-kicker">Real-robot diagnostic</p>
-              <h3>Camo-Dataset average</h3>
-              <p>Compared with the strongest protocol-matched imitation baseline, Diffusion Policy.</p>
-              <div class="metric-legend">
-                <span><i class="legend-baseline"></i> Diffusion Policy</span>
-                <span><i class="legend-ours"></i> Chameleon</span>
+              <div class="exp-subhead">
+                <h4>Per task</h4>
+                <div class="exp-toggle" role="group" aria-label="Metric">
+                  <button type="button" data-metric="0" aria-pressed="true">DSR</button>
+                  <button type="button" data-metric="1" aria-pressed="false">SR</button>
+                </div>
               </div>
+              <div id="exp-tasks" class="task-multiples"></div>
             </div>
-            <div id="result-bars" class="result-bars"></div>
-          </div>
+          </article>
 
-          <div class="camo-table-card">
-            <div class="camo-table-head">
-              <h3>Camo-Dataset per task</h3>
-              <p>DSR / SR (%) for each task against the protocol-matched imitation baselines.</p>
+          <article class="exp-block">
+            <header class="exp-head">
+              <span class="exp-index" aria-hidden="true">02</span>
+              <p class="section-kicker">Generalization · public benchmarks</p>
+              <h3>The same design transfers.</h3>
+              <p>
+                Best reported result on MemoryBench and on both MIKASA-Robo settings. On LIBERO-10 it passes
+                π0 and 4D-VLA but trails MoDE and MemoryVLA; its remaining errors there are grasping and
+                placement, not recall.
+              </p>
+            </header>
+            <div class="exp-body">
+              <div id="exp-public" class="public-multiples"></div>
+              <p class="exp-note">
+                Success rate (%), each baseline as published under the same protocol. Chameleon shows mean ± s.d.
+                over seeds. <sup>*</sup>Reported under a modified protocol, so only partly comparable.
+              </p>
             </div>
+          </article>
+
+          <article class="exp-block">
+            <header class="exp-head">
+              <span class="exp-index" aria-hidden="true">03</span>
+              <p class="section-kicker">Ablations · Camo-Dataset</p>
+              <h3>Remove any property and success falls.</h3>
+              <p>
+                Each variant takes away one of the three properties. Dropping the memory, its token-grounded
+                traces or its control index costs the most; dropping Control-JEPA keeps part of the decision
+                signal but still loses a quarter of end-to-end success.
+              </p>
+            </header>
+            <div class="exp-body">
+              <div id="exp-ablations" class="ablations"></div>
+              <p class="exp-note">Average end-to-end success (SR, %) over the three Camo-Dataset tasks.</p>
+            </div>
+          </article>
+
+          <details class="exp-table">
+            <summary>Show the full Camo-Dataset table</summary>
             <div class="camo-table-scroll">
               <table id="camo-table" class="camo-table"></table>
             </div>
-          </div>
+          </details>
+
+          <div id="exp-tip" class="exp-tip" role="status" hidden></div>
         </div>
       </section>
 
@@ -336,8 +389,8 @@
       <p>© 2026 MARS Lab · Nanyang Technological University</p>
     </footer>
 
-    <script src="config/site-data.js?v=20260926f"></script>
-    <script src="script.js?v=20260926f"></script>
-    <script src="method-walkthrough.js?v=20260926f"></script>
+    <script src="config/site-data.js?v=20260926g"></script>
+    <script src="script.js?v=20260926g"></script>
+    <script src="method-walkthrough.js?v=20260926g"></script>
   </body>
 </html>
