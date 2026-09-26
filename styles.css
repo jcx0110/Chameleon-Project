@@ -375,8 +375,18 @@ h1 {
   transition: color 160ms ease, text-decoration-color 160ms ease;
 }
 
+.affiliations a {
+  text-decoration: underline;
+  text-decoration-color: rgba(221, 86, 156, 0.3);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+  transition: color 160ms ease, text-decoration-color 160ms ease;
+}
+
 .author-list a:hover,
-.author-list a:focus-visible {
+.author-list a:focus-visible,
+.affiliations a:hover,
+.affiliations a:focus-visible {
   color: var(--blue-deep);
   text-decoration-color: var(--pink);
 }

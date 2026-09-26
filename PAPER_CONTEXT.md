@@ -8,6 +8,7 @@ This file is the working reference for future development of this project websit
 - **arXiv:** 2603.24576v2 (`cs.RO`, 5 June 2026)
 - **Authors:** Xinying Guo*, Chenxi Jiang*, Hyun Bin Kim, Yuhang Han, Ying Sun, Yang Xiao, Jianfei Yang†
 - **Affiliations:** MARS Lab, Nanyang Technological University; Institute for Infocomm Research, A*STAR; National University of Singapore
+- **Affiliation links (site hero):** MARS Lab → https://marslab.tech/ · NTU → https://www.ntu.edu.sg/ · I²R → https://www.a-star.edu.sg/i2r · A*STAR → https://www.a-star.edu.sg/ · NUS → https://www.nus.edu.sg/. As of September 2026 I²R has been merged into the A*STAR Institute of Advanced Intelligence and Computing (A*STAR IAIC); the site keeps the paper's wording.
 - **Notes:** *Equal contribution; †corresponding author
 - **Correspondence:** Jianfei Yang (`jianfei.yang@ntu.edu.sg`)
 - **Code:** https://github.com/gxyes/MARS_Chameleon
