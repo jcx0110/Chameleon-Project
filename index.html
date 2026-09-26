@@ -12,8 +12,8 @@
     <link rel="icon" href="assets/favicon-chameleon.png?v=3" type="image/png" sizes="128x128" />
     <link rel="apple-touch-icon" href="assets/favicon-chameleon.png?v=3" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.18.9/dist/katex.min.css" />
-    <link rel="stylesheet" href="styles.css?v=20260926k" />
-    <link rel="stylesheet" href="method-walkthrough.css?v=20260926k" />
+    <link rel="stylesheet" href="styles.css?v=20260926m" />
+    <link rel="stylesheet" href="method-walkthrough.css?v=20260926m" />
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
@@ -103,45 +103,43 @@
             <h2>The clue disappears. The decision remains.</h2>
           </div>
           <p>
-            In long-horizon manipulation, the information that determines an action may appear long before
-            the robot needs to act. At the decision point, the same visible scene can require different actions
-            depending on its history. We call this gap <strong>observation–action delay</strong>.
+            Robots often see the information they need long before they act. Chameleon starts from what that
+            gap asks of memory.
           </p>
         </div>
 
-        <div class="delay-story" aria-label="Observation-action delay example">
-          <div class="story-track" aria-hidden="true"></div>
-          <article class="story-step">
-            <span class="story-index">t<sub>0</sub></span>
-            <div class="story-symbol reveal-symbol"><i></i><i></i><i></i><b></b></div>
-            <h3>Observe</h3>
-            <p>The ball is visible under one cup.</p>
-          </article>
-          <article class="story-step">
-            <span class="story-index">t<sub>1…n</sub></span>
-            <div class="story-symbol shuffle-symbol"><i></i><i></i><i></i><b>↝</b></div>
-            <h3>Wait &amp; transform</h3>
-            <p>Cups move while the evidence is occluded.</p>
-          </article>
-          <article class="story-step story-decision">
-            <span class="story-index">t<sub>d</sub></span>
-            <div class="story-symbol choose-symbol"><i></i><i></i><i></i><b>?</b></div>
-            <h3>Decide</h3>
-            <p>The current frame alone is ambiguous.</p>
-          </article>
-          <article class="story-step story-action">
-            <span class="story-index">t<sub>d+1</sub></span>
-            <div class="story-symbol action-symbol"><i></i><i></i><i></i><b>✓</b></div>
-            <h3>Act from memory</h3>
-            <p>The correct choice depends on the earlier event.</p>
+        <div class="mot">
+          <article class="mot-beat">
+            <header class="mot-head">
+              <h3>Observation–action delay</h3>
+              <p>
+                In a shell game the robot sees which cup hides the ball, watches the cups shuffle, and only then
+                has to choose. By the time it decides the ball is out of sight, and the current view alone cannot
+                say which cup to lift.
+              </p>
+            </header>
+            <figure class="mot-story">
+              <div class="mot-frames">
+                <div class="mot-frame">
+                  <img src="assets/images/motivation/observe.webp" width="960" height="544" loading="lazy"
+                    alt="A child hides a ball under one of three cups while a robot watches." />
+                  <p>Observation</p>
+                </div>
+                <div class="mot-frame is-decision">
+                  <img src="assets/images/motivation/decide.webp" width="960" height="528" loading="lazy"
+                    alt="The cups are shuffled; the robot is unsure which cup holds the ball." />
+                  <p>Decision</p>
+                </div>
+                <div class="mot-frame">
+                  <img src="assets/images/motivation/act.webp" width="960" height="535" loading="lazy"
+                    alt="The robot lifts the right cup and finds the ball." />
+                  <p>Manipulation</p>
+                </div>
+              </div>
+              <figcaption class="mot-delay"><span>observation–action delay</span></figcaption>
+            </figure>
           </article>
         </div>
-
-        <blockquote class="thesis">
-          <span>“</span>
-          Robot memory should not merely store more of the past. It should make the right past actionable at
-          the right moment.
-        </blockquote>
       </section>
 
       <section class="content-section method-section" id="method">
@@ -336,8 +334,8 @@
       <p>© 2026 MARS Lab · Nanyang Technological University</p>
     </footer>
 
-    <script src="config/site-data.js?v=20260926k"></script>
-    <script src="script.js?v=20260926k"></script>
-    <script src="method-walkthrough.js?v=20260926k"></script>
+    <script src="config/site-data.js?v=20260926m"></script>
+    <script src="script.js?v=20260926m"></script>
+    <script src="method-walkthrough.js?v=20260926m"></script>
   </body>
 </html>

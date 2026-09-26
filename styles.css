@@ -542,160 +542,112 @@ h2 {
   text-align: justify;
 }
 
-.delay-story {
-  position: relative;
+/* ---------- Motivation: the shell-game story from the video ---------- */
+
+.mot {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
 }
 
-.story-track {
-  display: none;
+.mot-beat {
+  display: grid;
+  grid-template-columns: minmax(240px, 0.3fr) minmax(0, 1fr);
+  gap: clamp(28px, 4.4vw, 72px);
+  align-items: center;
+  padding: 52px 0;
+  border-top: 1px solid var(--line);
 }
 
-.story-step {
-  min-width: 0;
-  padding: 15px;
-  border: 1px solid rgba(105, 54, 132, 0.12);
-  border-radius: var(--radius);
-  background: var(--paper);
-  box-shadow: 0 2px 8px rgba(82, 36, 127, 0.08);
-  transition: transform 180ms ease, box-shadow 180ms ease;
+.mot-beat:last-child {
+  padding-bottom: 0;
 }
 
-.story-step:hover {
-  box-shadow: var(--shadow-hover);
-  transform: translateY(-3px);
-}
-
-.story-step:nth-of-type(2) { background: #f4edff; }
-.story-step:nth-of-type(3) { background: #fff0f7; }
-.story-step:nth-of-type(4) { background: #eef8ff; }
-.story-step:nth-of-type(5) { background: #f5efff; }
-
-.story-index {
-  display: block;
+.mot-head h3 {
   margin-bottom: 10px;
-  color: var(--muted);
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 0.7rem;
+  font-size: clamp(1.25rem, 1.7vw, 1.5rem);
+  letter-spacing: -0.02em;
 }
 
-.story-symbol {
-  position: relative;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  gap: 8px;
-  width: 100%;
-  height: 116px;
-  margin-bottom: 18px;
-  padding-bottom: 21px;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.72);
-}
-
-.story-symbol i {
-  position: relative;
-  z-index: 2;
-  display: block;
-  width: 27px;
-  height: 37px;
-  border-radius: 4px 4px 11px 11px;
-  background: #553069;
-  transform: perspective(40px) rotateX(-7deg);
-}
-
-.story-symbol i::before {
-  position: absolute;
-  top: -3px;
-  right: -2px;
-  left: -2px;
-  height: 7px;
-  border: 2px solid #553069;
-  border-radius: 50%;
-  background: white;
-  content: "";
-}
-
-.story-symbol b {
-  position: absolute;
-  display: grid;
-  place-items: center;
-}
-
-.reveal-symbol b {
-  bottom: 11px;
-  left: calc(50% - 5px);
-  z-index: 1;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--gold);
-}
-
-.shuffle-symbol b {
-  top: 8px;
-  color: var(--pink);
-  font-size: 2rem;
-  font-weight: 400;
-}
-
-.choose-symbol b,
-.action-symbol b {
-  top: 9px;
-  right: 10px;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  color: white;
-  background: var(--pink);
-}
-
-.action-symbol b {
-  right: calc(50% - 36px);
-  background: var(--blue-deep);
-}
-
-.action-symbol i:nth-of-type(3) {
-  background: var(--blue);
-}
-
-.story-step h3 {
-  margin-bottom: 7px;
-  color: var(--ink);
-  font-size: 1rem;
-}
-
-.story-step p {
+.mot-head p {
   margin: 0;
   color: var(--muted);
-  font-size: 0.78rem;
+  font-size: 0.9rem;
+  line-height: 1.6;
 }
 
-.thesis {
+/* The story in three frames, with the delay bracket under the first two. */
+.mot-story {
+  margin: 0;
+}
+
+.mot-frames {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(12px, 2vw, 28px);
+}
+
+.mot-frame {
   position: relative;
-  max-width: 1100px;
-  margin: 70px auto 0;
-  padding: 24px 30px 24px 62px;
-  border: 0;
-  border-radius: var(--radius);
-  color: var(--ink);
-  background: var(--rose-soft);
-  font-size: clamp(1.35rem, 2.6vw, 2.1rem);
-  font-weight: 600;
-  line-height: 1.32;
+  min-width: 0;
+}
+
+.mot-frame + .mot-frame::before {
+  position: absolute;
+  top: 34%;
+  left: calc(-1 * clamp(12px, 2vw, 28px) / 2);
+  color: var(--muted);
+  content: "→";
+  font-size: 1.1rem;
+  transform: translate(-50%, -50%);
+}
+
+.mot-frame img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 960 / 540;
+  object-fit: contain;
+}
+
+.mot-frame p {
+  margin: 10px 0 0;
+  font-size: 0.86rem;
+  font-weight: 750;
   text-align: center;
 }
 
-.thesis span {
+.mot-frame.is-decision p {
+  color: var(--pink);
+}
+
+.mot-delay {
+  --gap: clamp(12px, 2vw, 28px);
+  position: relative;
+  /* From the centre of the first frame to the centre of the second. */
+  width: calc((100% - 2 * var(--gap)) / 3 + var(--gap));
+  margin: 16px 0 0 calc((100% - 2 * var(--gap)) / 6);
+  padding-top: 12px;
+  border-top: 1.5px solid var(--ink);
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-style: italic;
+  text-align: center;
+}
+
+.mot-delay::before,
+.mot-delay::after {
   position: absolute;
-  top: 5px;
-  left: 24px;
-  color: var(--wine);
-  font-family: Georgia, serif;
-  font-size: 4rem;
-  font-weight: 400;
+  top: -7px;
+  width: 1.5px;
+  height: 12px;
+  background: var(--ink);
+  content: "";
+}
+
+.mot-delay::before {
+  left: 0;
+}
+
+.mot-delay::after {
+  right: 0;
 }
 
 .method-section {
@@ -2047,6 +1999,15 @@ h2 {
 }
 
 @media (max-width: 1100px) {
+  .mot-beat {
+    grid-template-columns: 1fr;
+    gap: 26px;
+  }
+
+  .mot-head {
+    max-width: 640px;
+  }
+
   .camo-task,
   .camo-metrics,
   .real-player {
@@ -2105,16 +2066,20 @@ h2 {
     display: none;
   }
 
-  .delay-story {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
   .citation-layout {
     grid-template-columns: 1fr;
   }
 }
 
 @media (max-width: 620px) {
+  .mot-beat {
+    padding: 40px 0;
+  }
+
+  .mot-frame p {
+    font-size: 0.72rem;
+  }
+
   /* Wide figures keep a readable size and scroll sideways. */
   .mech-plate {
     overflow-x: auto;
@@ -2259,52 +2224,6 @@ h2 {
 
   .split-heading > p {
     text-align: left;
-  }
-
-  .delay-story {
-    grid-template-columns: 1fr;
-  }
-
-  .story-step {
-    display: grid;
-    grid-template-columns: 86px 1fr;
-    column-gap: 15px;
-    align-items: center;
-  }
-
-  .story-index {
-    grid-column: 1 / -1;
-  }
-
-  .story-symbol {
-    grid-row: span 2;
-    height: 86px;
-    margin: 0;
-    padding-bottom: 16px;
-  }
-
-  .story-symbol i {
-    width: 17px;
-    height: 25px;
-  }
-
-  .story-step h3 {
-    align-self: end;
-    margin-bottom: 4px;
-  }
-
-  .story-step p {
-    align-self: start;
-  }
-
-  .thesis {
-    padding: 22px 22px 22px 48px;
-    text-align: left;
-  }
-
-  .thesis span {
-    left: 16px;
-    font-size: 3.5rem;
   }
 
   .dataset-facts {
