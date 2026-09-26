@@ -500,26 +500,54 @@
 
   function renderEvidence() {
     const root = byId("evidence-grid");
-    (data.evidence || []).forEach((item) => {
-      const card = element("article", "evidence-card");
-      const head = element("div", "evidence-head");
-      head.appendChild(element("span", "evidence-number", item.number));
-      head.appendChild(element("p", "section-kicker", item.property));
-      card.appendChild(head);
-      card.appendChild(element("h3", "", item.title));
-      card.appendChild(element("p", "evidence-body", item.body));
+    if (!root) return;
 
-      const stats = element("div", "evidence-stats");
-      (item.stats || []).forEach((stat) => {
-        const statNode = element("div", "evidence-stat");
-        statNode.appendChild(element("span", "", stat.label));
-        statNode.appendChild(element("strong", "", stat.value));
-        statNode.appendChild(element("small", "", stat.compare));
-        stats.appendChild(statNode);
+    const figure = (item) => {
+      const fig = element("figure", `mech-fig mech-${item.key}`);
+      fig.style.setProperty("--ratio", String(item.width / item.height));
+
+      const head = element("figcaption", "mech-head");
+      head.appendChild(element("span", "mech-number", item.number));
+      const title = element("div", "mech-title");
+      title.appendChild(element("p", "section-kicker", item.property));
+      title.appendChild(element("h3", "", item.claim));
+      head.appendChild(title);
+
+      const stats = element("p", "mech-stats");
+      item.stats.forEach((stat) => {
+        const node = element("span", "mech-stat");
+        node.appendChild(element("span", "", stat.label));
+        if (stat.from) node.appendChild(element("span", "mech-from", `${stat.from} →`));
+        node.appendChild(element("strong", "", stat.value));
+        stats.appendChild(node);
       });
-      card.appendChild(stats);
-      root.appendChild(card);
-    });
+      stats.appendChild(element("span", "mech-note", item.statNote));
+      head.appendChild(stats);
+      fig.appendChild(head);
+
+      // The figure opens at full size in a new tab.
+      const link = element("a", "mech-plate");
+      link.href = item.img;
+      link.target = "_blank";
+      link.rel = "noopener";
+      const img = element("img");
+      img.src = item.img;
+      img.alt = item.alt;
+      img.width = item.width;
+      img.height = item.height;
+      img.loading = "lazy";
+      link.appendChild(img);
+      fig.appendChild(link);
+      return fig;
+    };
+
+    const [first, ...rest] = data.evidence || [];
+    if (!first) return;
+    root.appendChild(figure(first));
+    const row = element("div", "mech-row");
+    row.style.gridTemplateColumns = rest.map((item) => `${(item.width / item.height).toFixed(3)}fr`).join(" ");
+    rest.forEach((item) => row.appendChild(figure(item)));
+    root.appendChild(row);
   }
 
   function setupCitation() {

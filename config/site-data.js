@@ -233,39 +233,51 @@ window.SITE_DATA = {
     ]
   },
 
+  // Mechanistic evidence: the three panels of paper Figure 4, one per property.
   evidence: [
     {
+      key: "separability",
       number: "01",
       property: "Separability",
-      title: "History remains decodable after the scene becomes ambiguous.",
-      body:
-        "At aliased decision frames, memory states retain the hidden episode variable far better than current visual tokens.",
+      claim: "Memory keeps look-alike histories apart.",
+      img: "assets/images/evidence/separability.webp",
+      width: 3321,
+      height: 876,
+      alt: "Probe on current tokens versus memory states at aliased decision frames, with memory trajectories for Clean a specified plate.",
       stats: [
-        { label: "Shell game", value: "83.3%", compare: "46.7% current" },
-        { label: "Seasonings", value: "98.5%", compare: "37.4% current" }
-      ]
+        { label: "Shell game", from: "46.7", value: "83.3" },
+        { label: "Seasonings", from: "37.4", value: "98.5" }
+      ],
+      statNote: "probe accuracy, current → memory"
     },
     {
+      key: "addressability",
       number: "02",
       property: "Addressability",
-      title: "The control query selects the causally relevant trace.",
-      body:
-        "Counterfactual trace edits change the chosen subgoal only when relevant evidence is replaced or removed.",
+      claim: "The control query picks the relevant trace.",
+      img: "assets/images/evidence/addressability.webp",
+      width: 858,
+      height: 921,
+      alt: "Counterfactual trace edits under a fixed control query in Add various seasonings.",
       stats: [
-        { label: "Full trace", value: "93%", compare: "choice accuracy" },
-        { label: "Mask relevant", value: "40%", compare: "choice accuracy" }
-      ]
+        { label: "Full", value: "93" },
+        { label: "Swap", value: "87" },
+        { label: "Mask+", value: "40" },
+        { label: "Mask−", value: "90" }
+      ],
+      statNote: "choice accuracy"
     },
     {
+      key: "prospectiveness",
       number: "03",
       property: "Prospectiveness",
-      title: "The working state exposes future control information earlier.",
-      body:
-        "Control-JEPA makes future endpoints and upcoming subgoal modes more reliably decodable before the action is executed.",
-      stats: [
-        { label: "Full model SR", value: "71.3%", compare: "Camo-Dataset" },
-        { label: "Without JEPA", value: "52.8%", compare: "Camo-Dataset" }
-      ]
+      claim: "Future control shows up before the action.",
+      img: "assets/images/evidence/prospectiveness.webp",
+      width: 2396,
+      height: 921,
+      alt: "Decoding future endpoints and subgoal modes from the working state around the decision, with and without Control-JEPA.",
+      stats: [{ label: "Shell game", value: "+17" }],
+      statNote: "earlier than w/o Control-JEPA"
     }
   ],
 
