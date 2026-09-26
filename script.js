@@ -18,6 +18,51 @@
   }
 
 
+  // A slow, endless gallery of simulation rollouts under the motivation story.
+  function renderSimMarquee() {
+    const root = byId("sim-marquee");
+    const benches = data.simBenchmarks || [];
+    if (!root || !benches.length) return;
+
+    // Interleave the benchmarks so neighbouring tiles differ.
+    const items = [];
+    const longest = Math.max(...benches.map((b) => b.tasks.length));
+    for (let i = 0; i < longest; i += 1) {
+      benches.forEach((bench) => {
+        if (bench.tasks[i]) items.push({ bench, task: bench.tasks[i] });
+      });
+    }
+
+    const track = element("div", "marquee-track");
+    // Two identical groups; the track slides by one group and loops seamlessly.
+    [0, 1].forEach((copy) => {
+      const group = element("div", "marquee-group");
+      if (copy) group.setAttribute("aria-hidden", "true");
+      items.forEach(({ bench, task }) => {
+        const tile = element("figure", "marquee-tile");
+        const v = document.createElement("video");
+        v.src = task.src;
+        v.poster = task.poster;
+        v.muted = true;
+        v.loop = true;
+        v.playsInline = true;
+        v.preload = "none";
+        v.setAttribute("aria-label", `${bench.name}: ${task.name}`);
+        tile.appendChild(v);
+        tile.appendChild(element("figcaption", "", bench.name));
+        group.appendChild(tile);
+      });
+      track.appendChild(group);
+    });
+    root.appendChild(track);
+
+    const videos = [...root.querySelectorAll("video")];
+    new IntersectionObserver((entries) => {
+      const on = entries[0].isIntersecting && !reducedMotion;
+      videos.forEach((v) => (on ? v.play().catch(() => {}) : v.pause()));
+    }, { threshold: 0.2 }).observe(root);
+  }
+
   function renderCamoTasks() {
     const root = byId("camo-tasks");
     if (!root) return;
@@ -34,7 +79,6 @@
       const facts = element("dl", "camo-task-facts");
       [
         ["Hidden variable", task.hiddenVariable],
-        ["Why it is ambiguous", task.aliasing],
         ["Diagnoses", task.diagnostic]
       ].forEach(([term, value]) => {
         const item = element("div");
@@ -216,7 +260,6 @@
     function renderSide() {
       side.textContent = "";
       side.appendChild(element("p", "section-kicker", group.question));
-      side.appendChild(element("h4", "", group.title));
 
       const picker = element("div", `real-picker real-picker-${group.picker}`);
       picker.appendChild(element("p", "real-picker-label", group.pickerLabel));
@@ -602,6 +645,7 @@
     );
   }
 
+  renderSimMarquee();
   renderCamoTasks();
   renderRealDemos();
   renderSimDemos();

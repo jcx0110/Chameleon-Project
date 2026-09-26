@@ -6,9 +6,9 @@ window.SITE_DATA = {
       id: "plate",
       title: "Clean a specified plate",
       question: "Which plate was used?",
-      hiddenVariable: "Which of the visually similar plates the human used and set down as the target.",
+      hiddenVariable: "Which of the look-alike plates the human used.",
       aliasing: "Once the human withdraws, three similar plates sit on the table and any of them could be the target.",
-      diagnostic: "Event–object binding under delayed relevance",
+      diagnostic: "Event–object binding",
       chance: "1/3",
       frames: [
         { img: "assets/images/camo/plate-1.jpg", label: "Observation & Memory", caption: "The plates and the cube are in view." },
@@ -21,9 +21,9 @@ window.SITE_DATA = {
       id: "shell",
       title: "Play shell game",
       question: "Which cup holds the ball?",
-      hiddenVariable: "Where the hidden object ends up after it is covered and the cups are swapped.",
+      hiddenVariable: "Where the ball ends up after the swaps.",
       aliasing: "After the shuffle the cups are identical and the ball is out of sight.",
-      diagnostic: "Spatial tracking under occlusion and distractor motion",
+      diagnostic: "Tracking under occlusion",
       chance: "1/3",
       frames: [
         { img: "assets/images/camo/shell-1.jpg", label: "Observation & Memory", caption: "The ball goes under one cup." },
@@ -36,9 +36,9 @@ window.SITE_DATA = {
       id: "seasonings",
       title: "Add various seasonings",
       question: "Which seasonings are already in?",
-      hiddenVariable: "Which subgoals of the repeated sequence have already been completed.",
+      hiddenVariable: "Which seasonings have already been added.",
       aliasing: "The workspace returns to a similar state after every addition.",
-      diagnostic: "Sequential progress memory, with no repeats and no omissions",
+      diagnostic: "Progress memory",
       chance: "1/27",
       repeat: "Decide and add, three times",
       frames: [
@@ -124,7 +124,7 @@ window.SITE_DATA = {
     {
       id: "memorybench",
       name: "MemoryBench",
-      tests: "Spatial memory in manipulation",
+      tests: "Spatial memory",
       protocol: "3 task-specific policies",
       value: "97.3",
       uncertainty: "± 4.5%",
@@ -137,7 +137,7 @@ window.SITE_DATA = {
     {
       id: "libero-10",
       name: "LIBERO-10",
-      tests: "Language-conditioned long-horizon imitation",
+      tests: "Long-horizon, language-conditioned",
       protocol: "10-task mixed policy",
       value: "87.1",
       uncertainty: "± 0.8%",
@@ -157,7 +157,7 @@ window.SITE_DATA = {
     {
       id: "mikasa-robo",
       name: "MIKASA-Robo",
-      tests: "Non-Markovian tasks in simulation",
+      tests: "Non-Markovian tasks",
       protocol: "5-task mixed policy",
       value: "75.1",
       uncertainty: "± 1.4%",

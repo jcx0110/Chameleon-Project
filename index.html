@@ -11,9 +11,15 @@
     <title>Chameleon · CoRL 2026</title>
     <link rel="icon" href="assets/favicon-chameleon.png?v=3" type="image/png" sizes="128x128" />
     <link rel="apple-touch-icon" href="assets/favicon-chameleon.png?v=3" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Inter:opsz,wght@14..32,400..800&family=JetBrains+Mono:wght@500&display=swap"
+    />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.18.9/dist/katex.min.css" />
-    <link rel="stylesheet" href="styles.css?v=20260926m" />
-    <link rel="stylesheet" href="method-walkthrough.css?v=20260926m" />
+    <link rel="stylesheet" href="styles.css?v=20260926o" />
+    <link rel="stylesheet" href="method-walkthrough.css?v=20260926o" />
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
@@ -88,10 +94,6 @@
             preload="metadata"
             aria-label="Chameleon teaser demonstration"
           ></video>
-          <figcaption>
-            <span class="live-dot" aria-hidden="true"></span>
-            Real-robot memory under observation–action delay
-          </figcaption>
         </figure>
 
       </section>
@@ -102,10 +104,6 @@
             <p class="section-kicker">Motivation</p>
             <h2>The clue disappears. The decision remains.</h2>
           </div>
-          <p>
-            Robots often see the information they need long before they act. Chameleon starts from what that
-            gap asks of memory.
-          </p>
         </div>
 
         <div class="mot">
@@ -113,9 +111,8 @@
             <header class="mot-head">
               <h3>Observation–action delay</h3>
               <p>
-                In a shell game the robot sees which cup hides the ball, watches the cups shuffle, and only then
-                has to choose. By the time it decides the ball is out of sight, and the current view alone cannot
-                say which cup to lift.
+                The robot sees which cup hides the ball, watches the cups shuffle, and only then has to choose.
+                By then the ball is out of sight, so the current view alone cannot say which cup to lift.
               </p>
             </header>
             <figure class="mot-story">
@@ -140,6 +137,8 @@
             </figure>
           </article>
         </div>
+
+        <div id="sim-marquee" class="marquee" aria-label="Chameleon rollouts in simulation"></div>
       </section>
 
       <section class="content-section method-section" id="method">
@@ -150,8 +149,7 @@
               <h2>Control-indexed prospective memory</h2>
             </div>
             <p>
-              Chameleon keeps a memory that answers the question the robot is facing right now. Scroll through
-              the original method figure one operation at a time.
+              A memory that answers the question the robot faces right now. Scroll to step through the figure.
             </p>
           </div>
 
@@ -169,9 +167,8 @@
             <h2>Camo-Dataset</h2>
           </div>
           <p>
-            Each episode shows the evidence early, then hides, moves or repeats it until the scene no longer
-            tells the robot what to do. At that aliased decision point, look-alike scenes call for different
-            actions, so a policy can only succeed by recovering the right past.
+            Each episode shows the evidence early, then hides it until the scene alone no longer tells the robot
+            what to do. Only a policy that recovers the right past succeeds.
           </p>
         </div>
 
@@ -179,28 +176,27 @@
           <span><strong>UR5</strong> arm with a Robotiq Hand-E gripper</span>
           <span><strong>2</strong> RGB views, wrist and third-person</span>
           <span><strong>120</strong> teleoperated demos per task</span>
-          <span><strong>Balanced</strong> over the hidden variable, so chance is exact</span>
+          <span><strong>Balanced</strong> over the hidden variable</span>
         </div>
 
         <div id="camo-tasks" class="camo-tasks"></div>
 
         <div class="camo-metrics" aria-label="Camo-Dataset metrics">
           <p class="camo-metrics-lede">
-            Scoring separates motor errors from memory errors: a policy can execute a clean grasp and still pick
-            the wrong target.
+            A policy can grasp cleanly and still pick the wrong target, so the two are scored apart.
           </p>
           <dl>
             <div>
               <dt>MSR <span class="camo-formula">= P(M)</span></dt>
-              <dd>Manipulation success. A valid manipulation, whichever target it picks.</dd>
+              <dd>A valid manipulation, whatever the target.</dd>
             </div>
             <div>
               <dt>DSR <span class="camo-formula">= P(D | M)</span></dt>
-              <dd>Decision success. The history-correct target or subgoal, given a valid manipulation.</dd>
+              <dd>The history-correct choice, given a valid manipulation.</dd>
             </div>
             <div>
               <dt>SR <span class="camo-formula">= P(M ∩ D)</span></dt>
-              <dd>End-to-end success. Both at once.</dd>
+              <dd>Both at once.</dd>
             </div>
           </dl>
         </div>
@@ -214,8 +210,7 @@
               <h2>Chameleon in action</h2>
             </div>
             <p>
-              Real-robot rollouts on Camo-Dataset first, grouped by task and by the hidden value each episode
-              has to remember. Then one successful rollout for every task in the three public simulation
+              Real-robot rollouts on Camo-Dataset, then one successful rollout per task on three simulation
               benchmarks.
             </p>
           </div>
@@ -223,7 +218,7 @@
           <div class="demo-block">
             <div class="demo-block-head">
               <h3>Real robot</h3>
-              <p>Chameleon rollouts on Camo-Dataset. Click a phase to jump to it.</p>
+              <p>Click a phase to jump to it.</p>
             </div>
             <div id="real-demos" class="real-demos"></div>
           </div>
@@ -231,7 +226,7 @@
           <div class="demo-block">
             <div class="demo-block-head">
               <h3>Simulation</h3>
-              <p>One successful rollout per task, shown from the third-person camera.</p>
+              <p>One successful rollout per task.</p>
             </div>
             <div id="sim-demos" class="sim-demos"></div>
           </div>
@@ -245,9 +240,8 @@
               <h2>Memory changes what the robot can do.</h2>
             </div>
             <p>
-              Camo-Dataset scores manipulation (MSR), the history-correct decision (DSR) and both together (SR)
-              separately, so memory errors show up apart from motor errors. The public benchmarks then test
-              whether the same design carries over.
+              Camo-Dataset separates memory errors from motor errors; the public benchmarks test whether the design
+              carries over.
             </p>
           </div>
 
@@ -264,8 +258,7 @@
           <figure class="paper-table">
             <figcaption>
               <span class="paper-table-label">Table 2</span>
-              Public long-horizon and memory benchmarks. Success rate (%), every entry under the protocol of its
-              cited source.
+              Public long-horizon and memory benchmarks. Success rate (%) under each source's protocol.
             </figcaption>
             <div class="paper-table-scroll">
               <table id="public-table"></table>
@@ -300,8 +293,7 @@
             <p class="section-kicker">Citation + resources</p>
             <h2>Build on Chameleon.</h2>
             <p>
-              Read the full paper for architecture details, protocol definitions, per-task results, ablations,
-              hyperparameters, and limitations.
+              Protocols, per-task results, hyperparameters and limitations are in the paper.
             </p>
             <div class="resource-list">
               <a href="assets/papers/2603.24576v2.pdf"><span>Read the paper</span><small>PDF · 4.6 MB ↗</small></a>
@@ -334,8 +326,8 @@
       <p>© 2026 MARS Lab · Nanyang Technological University</p>
     </footer>
 
-    <script src="config/site-data.js?v=20260926m"></script>
-    <script src="script.js?v=20260926m"></script>
-    <script src="method-walkthrough.js?v=20260926m"></script>
+    <script src="config/site-data.js?v=20260926o"></script>
+    <script src="script.js?v=20260926o"></script>
+    <script src="method-walkthrough.js?v=20260926o"></script>
   </body>
 </html>
