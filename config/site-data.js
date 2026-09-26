@@ -1,5 +1,12 @@
 window.SITE_DATA = {
 
+  // Hero loop: the three real-robot rollouts cut back to back (assets/videos/hero-montage.mp4).
+  heroMontage: [
+    { start: 0, label: "Clean a specified plate", speed: "10×" },
+    { start: 16.5, label: "Play shell game", speed: "10×" },
+    { start: 32.63, label: "Add various seasonings", speed: "5×" }
+  ],
+
   // Camo-Dataset task design (paper Fig. 3, Table S3). Frames are cropped from Fig. 3.
   camoTasks: [
     {
