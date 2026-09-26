@@ -256,7 +256,7 @@ h3 {
 .hero-title-lockup {
   position: relative;
   display: inline-block;
-  margin: 0 auto 22px;
+  margin: 0 auto 34px;
 }
 
 .hero-title-lockup h1 {
@@ -266,7 +266,7 @@ h3 {
 .hero-title-lockup .eyebrow-row {
   position: absolute;
   right: -18px;
-  bottom: -20px;
+  bottom: -34px;
   z-index: 1;
   margin: 0;
   justify-content: flex-end;
@@ -318,7 +318,7 @@ h1 {
   color: transparent;
   font-size: clamp(4rem, 8.6vw, 7.5rem);
   font-weight: 800;
-  letter-spacing: -0.07em;
+  letter-spacing: -0.055em;
   line-height: 0.9;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -329,7 +329,7 @@ h1 {
 /* The wordmark slowly shifts colour, the way a chameleon does. */
 @keyframes skin-shift {
   to {
-    background-position: 70% 60%, 100% 50%;
+    background-position: 30% 40%, 100% 50%;
   }
 }
 
@@ -341,7 +341,7 @@ h1 {
   color: transparent;
   font-size: clamp(2rem, 4.25vw, 3.7rem);
   font-weight: 720;
-  letter-spacing: -0.045em;
+  letter-spacing: -0.03em;
   line-height: 1.08;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -380,7 +380,7 @@ sup {
 .affiliations {
   flex-wrap: wrap;
   justify-content: center;
-  gap: 5px 11px;
+  gap: 4px 10px;
   margin: 10px auto 20px;
   color: var(--muted);
   font-size: 0.77rem;
@@ -445,7 +445,7 @@ sup {
 
 .media-frame video {
   width: 100%;
-  aspect-ratio: 2120 / 1080;
+  aspect-ratio: 16 / 9;
   object-fit: cover;
 }
 
@@ -2235,7 +2235,7 @@ h2 {
 
   .hero-title-lockup .eyebrow-row {
     right: 50%;
-    bottom: -24px;
+    bottom: -32px;
     transform: translateX(50%);
   }
 
@@ -2253,7 +2253,7 @@ h2 {
     font-size: 0.77rem;
   }
 
-  .affiliations span {
+  .affiliations .sep {
     display: none;
   }
 
