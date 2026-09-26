@@ -49,6 +49,19 @@
     radial-gradient(circle at 97% 17%, #fff6e9 0 2.5%, transparent 5%),
     #fcf7ff;
   --ink-splatter: url("assets/images/chameleon-ink-splatter.svg");
+  /* Iridescent fill for display type: soft stops, no hard-edged blotches. */
+  --skin: linear-gradient(
+    100deg,
+    #5a37c4 0%,
+    #7b45cc 14%,
+    #b24fbd 30%,
+    #df5a9e 44%,
+    #ec7fa8 52%,
+    #c65ab4 62%,
+    #6d6ad6 76%,
+    #3f93d1 88%,
+    #5a37c4 100%
+  );
   --text-ink: var(--ink-splatter), var(--gradient);
   --mottle: radial-gradient(circle at 12% 20%, rgba(122, 79, 207, 0.16), transparent 29%),
     radial-gradient(circle at 82% 16%, rgba(221, 86, 156, 0.16), transparent 27%),
@@ -200,44 +213,66 @@ h3 {
   border-bottom: 1px solid currentColor;
 }
 
-/* ---------- Hero: title on the left, the robot on the right ---------- */
-
 .hero {
   position: relative;
   isolation: isolate;
-  display: grid;
-  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
-  gap: clamp(40px, 5vw, 84px);
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  min-height: min(calc(100svh - 62px), 900px);
-  padding-top: clamp(40px, 6vh, 72px);
-  padding-bottom: clamp(16px, 3vh, 40px);
+  padding-top: clamp(72px, 9vw, 116px);
+  padding-bottom: 64px;
+  text-align: center;
 }
 
-/* Soft colour washes behind the whole hero; the ink texture sits behind the video only. */
 .hero::before {
   position: absolute;
   top: 0;
   left: 50%;
   z-index: -1;
   width: 100vw;
-  height: 100%;
-  background: radial-gradient(ellipse at 8% 12%, rgba(122, 79, 207, 0.14), transparent 34%),
-    radial-gradient(ellipse at 70% 30%, rgba(221, 86, 156, 0.14), transparent 36%),
-    radial-gradient(ellipse at 88% 78%, rgba(75, 152, 207, 0.14), transparent 34%),
-    radial-gradient(circle at 34% 88%, rgba(242, 160, 75, 0.06), transparent 18%);
+  height: 680px;
+  background: var(--ink-splatter) center / cover no-repeat,
+    radial-gradient(ellipse at 13% 18%, rgba(122, 79, 207, 0.17), transparent 31%),
+    radial-gradient(ellipse at 82% 17%, rgba(221, 86, 156, 0.17), transparent 30%),
+    radial-gradient(ellipse at 52% 67%, rgba(75, 152, 207, 0.17), transparent 31%),
+    radial-gradient(ellipse at 29% 72%, rgba(221, 86, 156, 0.12), transparent 25%),
+    radial-gradient(ellipse at 63% 20%, rgba(122, 79, 207, 0.12), transparent 25%),
+    radial-gradient(ellipse at 90% 70%, rgba(75, 152, 207, 0.12), transparent 23%),
+    radial-gradient(circle at 19% 84%, rgba(242, 160, 75, 0.055), transparent 14%);
   content: "";
-  -webkit-mask-image: linear-gradient(to bottom, black 55%, transparent);
-  mask-image: linear-gradient(to bottom, black 55%, transparent);
-  opacity: 0.7;
+  -webkit-mask-image: linear-gradient(to bottom, black 10%, transparent 96%);
+  mask-image: linear-gradient(to bottom, black 10%, transparent 96%);
+  filter: blur(2px);
+  opacity: 0.36;
   pointer-events: none;
   transform: translateX(-50%);
 }
 
 .hero-copy {
-  min-width: 0;
+  width: 100%;
+  max-width: 1180px;
 }
 
+.hero-title-lockup {
+  position: relative;
+  display: inline-block;
+  margin: 0 auto 22px;
+}
+
+.hero-title-lockup h1 {
+  margin: 0;
+}
+
+.hero-title-lockup .eyebrow-row {
+  position: absolute;
+  right: -18px;
+  bottom: -20px;
+  z-index: 1;
+  margin: 0;
+  justify-content: flex-end;
+}
+
+.eyebrow-row,
 .hero-actions,
 .author-list,
 .affiliations,
@@ -251,23 +286,19 @@ h3 {
   align-items: center;
 }
 
-.hero-venue {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin: 0 0 26px;
-  color: var(--muted);
-  font-size: 0.76rem;
-  font-weight: 650;
+.eyebrow-row {
+  justify-content: center;
+  gap: 11px;
+  margin-bottom: 24px;
 }
 
 .pill {
   display: inline-flex;
   align-items: center;
-  min-height: 26px;
-  padding: 4px 11px;
+  min-height: 28px;
+  padding: 4px 12px;
   border-radius: 100px;
-  font-size: 0.66rem;
+  font-size: 0.68rem;
   font-weight: 750;
   letter-spacing: 0.09em;
   text-transform: uppercase;
@@ -280,46 +311,47 @@ h3 {
 }
 
 h1 {
-  width: fit-content;
-  margin: 0 0 20px;
-  background: var(--ink-splatter) center / 100% 100% no-repeat, var(--gradient);
+  margin: 0 0 10px;
+  background: var(--skin) 0% 50% / 220% 100%;
   background-clip: text;
   color: transparent;
-  font-size: clamp(3.8rem, 7.2vw, 7rem);
+  font-size: clamp(4rem, 8.6vw, 7.5rem);
   font-weight: 800;
   letter-spacing: -0.07em;
   line-height: 0.9;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 10px 24px rgba(122, 79, 207, 0.16));
+  animation: skin-shift 16s ease-in-out infinite alternate;
+}
+
+/* The wordmark slowly shifts colour, the way a chameleon does. */
+@keyframes skin-shift {
+  to {
+    background-position: 100% 50%;
+  }
 }
 
 .hero-title {
-  max-width: 22ch;
-  margin: 0 0 18px;
-  color: var(--ink);
-  font-size: clamp(1.45rem, 2.15vw, 2.1rem);
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 1.16;
-}
-
-.hero-lede {
-  max-width: 46ch;
-  margin: 0 0 32px;
-  color: var(--muted);
-  font-size: 1rem;
-  line-height: 1.6;
-}
-
-.hero-people {
-  padding-top: 22px;
-  border-top: 1px solid var(--line);
+  max-width: 1100px;
+  margin: 24px auto 28px;
+  background: linear-gradient(100deg, #4a1f78 0%, #7a348f 45%, #a83e8e 62%, #33588f 100%);
+  background-clip: text;
+  color: transparent;
+  font-size: clamp(2rem, 4.25vw, 3.7rem);
+  font-weight: 720;
+  letter-spacing: -0.045em;
+  line-height: 1.08;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .author-list {
   flex-wrap: wrap;
-  gap: 4px 18px;
-  font-size: 0.88rem;
+  justify-content: center;
+  gap: 5px 24px;
+  margin: 0 auto;
+  font-size: 0.9rem;
   font-weight: 620;
 }
 
@@ -346,26 +378,28 @@ sup {
 
 .affiliations {
   flex-wrap: wrap;
-  gap: 2px 18px;
-  margin: 12px 0 4px;
+  justify-content: center;
+  gap: 5px 11px;
+  margin: 10px auto 20px;
   color: var(--muted);
-  font-size: 0.76rem;
+  font-size: 0.77rem;
 }
 
 .hero-notes {
-  margin: 0;
+  margin: -12px 0 0;
   color: var(--muted);
-  font-size: 0.7rem;
+  font-size: 0.68rem;
 }
 
-.hero-notes sup:not(:first-child) {
-  margin-left: 12px;
+.hero-notes span {
+  margin: 0 6px;
 }
 
 .hero-actions {
   flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 30px;
+  justify-content: center;
+  gap: clamp(16px, 1.6vw, 24px);
+  margin-top: 23px;
 }
 
 .button {
@@ -395,58 +429,40 @@ sup {
 .hero-actions .button:nth-child(3) { background: var(--ui-blue); }
 
 .hero-demo {
+  width: 100%;
+  margin: 46px 0 0;
+}
+
+.media-frame {
   position: relative;
-  min-width: 0;
-  margin: 0;
-}
-
-/* An offset plate in the brand gradient gives the video some depth. */
-.hero-demo::before {
-  position: absolute;
-  top: 22px;
-  right: -22px;
-  bottom: 22px;
-  left: 22px;
-  z-index: -1;
-  border-radius: 24px;
-  background: var(--ink-splatter) center / cover no-repeat, var(--gradient);
-  content: "";
-  opacity: 0.3;
-}
-
-.hero-demo::after {
-  position: absolute;
-  inset: -16% -12% -18% -10%;
-  z-index: -2;
-  background: var(--ink-splatter) center / contain no-repeat;
-  content: "";
-  opacity: 0.32;
-  pointer-events: none;
+  overflow: hidden;
+  border: 1px solid rgba(105, 54, 132, 0.13);
+  border-radius: var(--radius);
+  background: var(--cream);
+  box-shadow: var(--shadow);
 }
 
 .media-frame video {
   width: 100%;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 2120 / 1080;
   object-fit: cover;
-  border-radius: 22px;
-  background: #f1edf1;
-  box-shadow: 0 28px 64px rgba(82, 36, 127, 0.22), 0 0 0 1px rgba(105, 54, 132, 0.1);
 }
 
 .media-frame figcaption {
   position: absolute;
-  top: 16px;
-  left: 16px;
+  right: 14px;
+  bottom: 14px;
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 7px 12px;
+  padding: 7px 11px;
+  border: 1px solid rgba(255, 255, 255, 0.64);
   border-radius: 100px;
   color: var(--ink);
-  background: rgba(255, 255, 255, 0.86);
+  background: rgba(255, 255, 255, 0.82);
   backdrop-filter: blur(12px);
-  font-size: 0.7rem;
-  font-weight: 700;
+  font-size: 0.67rem;
+  font-weight: 650;
 }
 
 .live-dot {
@@ -798,7 +814,7 @@ h2 {
 
 .dataset-facts strong {
   width: fit-content;
-  background: var(--ink-splatter) center / 100% 100% no-repeat, var(--gradient);
+  background: var(--skin);
   background-clip: text;
   color: transparent;
   font-size: clamp(1.6rem, 2.4vw, 2.2rem);
@@ -836,7 +852,7 @@ h2 {
   display: block;
   width: fit-content;
   margin-bottom: 16px;
-  background: var(--ink-splatter) center / 100% 100% no-repeat, var(--gradient);
+  background: var(--skin);
   background-clip: text;
   color: transparent;
   font-size: 3.4rem;
@@ -2057,16 +2073,6 @@ h2 {
 }
 
 @media (max-width: 1100px) {
-  .hero {
-    grid-template-columns: 1fr;
-    gap: 56px;
-    min-height: 0;
-  }
-
-  .hero-demo {
-    max-width: 880px;
-  }
-
   .camo-task,
   .camo-metrics,
   .real-player {
@@ -2223,20 +2229,31 @@ h2 {
   }
 
   h1 {
-    font-size: clamp(3rem, 14.5vw, 4.6rem);
+    font-size: clamp(3rem, 15vw, 5rem);
+  }
+
+  .hero-title-lockup .eyebrow-row {
+    right: 50%;
+    bottom: -24px;
+    transform: translateX(50%);
+  }
+
+  .hero-title-lockup .pill {
+    white-space: nowrap;
   }
 
   .hero-title {
-    font-size: 1.35rem;
-  }
-
-  .hero-lede {
-    font-size: 0.9rem;
+    margin-top: 40px;
+    font-size: clamp(1.75rem, 8.4vw, 2.8rem);
   }
 
   .author-list {
     gap: 5px 12px;
     font-size: 0.77rem;
+  }
+
+  .affiliations span {
+    display: none;
   }
 
   .button {
@@ -2245,24 +2262,19 @@ h2 {
     font-size: 0.72rem;
   }
 
-  .hero-demo::before {
-    top: 12px;
-    right: -10px;
-    bottom: 12px;
-    left: 12px;
-    border-radius: 16px;
+  .hero-demo {
+    margin-top: 34px;
   }
 
-  .media-frame video {
-    border-radius: 14px;
+  .media-frame {
+    border-radius: 13px;
   }
 
   .media-frame figcaption {
-    top: 8px;
-    left: 8px;
-    max-width: calc(100% - 16px);
-    padding: 5px 9px;
-    font-size: 0.6rem;
+    right: 7px;
+    bottom: 7px;
+    max-width: calc(100% - 14px);
+    font-size: 0.54rem;
   }
 
   .content-section {
@@ -2391,6 +2403,10 @@ h2 {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  h1 {
+    animation: none;
+  }
+
   html {
     scroll-behavior: auto;
   }
